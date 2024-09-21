@@ -1,10 +1,131 @@
 const express = require("express");
+const zod = require("zod");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+const User = require("../models/userSchema");
+
+dotenv.config();
 
 const router = express.Router();
 
-router.get("/signup", (req, res) => {
-  res.send("signup");
+const signupSchema = zod.object({
+  username: zod.string().min(3).max(20),
+  email: zod.string().email().min(6).max(30),
+  password: zod.string().min(8).max(100),
 });
 
+router.post("/signup", async (req, res) => {
+  const body = req.body;
+  const result = signupSchema.safeParse(body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid data",
+      errors: result.error.errors,
+    });
+  }
+
+  const existingUser = await User.findOne({
+    email: body.email,
+  });
+
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User already exists",
+    });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(body.password, salt);
+
+  try {
+    const newUser = await User.create({
+      username: body.username,
+      email: body.email,
+      password: hashedPassword,
+    });
+    const userId = newUser._id;
+
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      token: `Bearer ${token}`,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while creating account",
+      error: "Internal Server Error",
+    });
+  }
+});
+
+const signinSchema = zod.object({
+  email: zod.string().email().min(6).max(30),
+  password: zod.string().min(8).max(100),
+});
+
+router.post("/signin", async (req, res) => {
+  const body = req.body;
+  const result = signinSchema.safeParse(body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid data",
+      errors: result.error.errors,
+    });
+  }
+
+  try {
+    const existingUser = await User.findOne({
+      email: body.email,
+    });
+  
+    if (!existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+  
+    const validPassword = await bcrypt.compare(body.password, existingUser.password);
+  
+    if (!validPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid password",
+      });
+    }
+  
+    const userId = existingUser._id;
+  
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+  
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      token: `Bearer ${token}`,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while logging in",
+      error: "Internal Server Error",
+    });
+  }
+  
+});
 
 module.exports = router;

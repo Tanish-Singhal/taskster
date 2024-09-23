@@ -27,14 +27,19 @@ router.post("/signup", async (req, res) => {
     });
   }
 
-  const existingUser = await User.findOne({
-    email: body.email,
-  });
-
-  if (existingUser) {
+  const existingUserByEmail = await User.findOne({ email: body.email });
+  if (existingUserByEmail) {
     return res.status(400).json({
       success: false,
-      message: "User already exists",
+      message: "Email already in use",
+    });
+  }
+
+  const existingUserByUsername = await User.findOne({ username: body.username });
+  if (existingUserByUsername) {
+    return res.status(400).json({
+      success: false,
+      message: "Username already in use",
     });
   }
 
@@ -50,7 +55,7 @@ router.post("/signup", async (req, res) => {
     const userId = newUser._id;
 
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
 
     res.status(201).json({
@@ -60,6 +65,7 @@ router.post("/signup", async (req, res) => {
     });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: "Error while creating account",
@@ -109,12 +115,13 @@ router.post("/signin", async (req, res) => {
     const userId = existingUser._id;
   
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
   
     res.status(200).json({
       success: true,
       message: "User logged in successfully",
+      
       token: `Bearer ${token}`,
     });
 

@@ -23,13 +23,6 @@ const userSchema = new mongoose.Schema(
       minLength: [8, "Password must be at least 8 characters long"],
       maxLength: [100, "Password must be at most 100 characters long"],
     },
-    boardId: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Board",
-        required: true,
-      },
-    ],
   },
   { timestamps: true }
 );

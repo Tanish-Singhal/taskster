@@ -19,11 +19,16 @@ router.post("/new", async (req, res) => {
   if (!result.success) {
     return res.status(400).json({
       success: false,
-      message: result.error.errors[0],
+      message: "Invalid data",
     });
   }
 
   try {
+    const existingBoard = await Board.findOne({
+      name: body.name,
+      userId: req.userId,
+    });
+
     const newBoard = await Board.create({
       name: body.name,
       userId: req.userId,
@@ -53,7 +58,6 @@ router.get("/", async (req, res) => {
       data: board,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -76,13 +80,13 @@ router.get("/:id", async (req, res) => {
       success: true,
       data: board,
     });
-  } catch(error) {
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: "Error while fetching board",
     });
   }
-})
+});
 
 router.delete("/:id", async (req, res) => {
   const boardId = req.params.id;
@@ -124,7 +128,11 @@ router.put("/:id", async (req, res) => {
   }
 
   try {
-    const updatedBoard = await Board.findByIdAndUpdate(req.params.id, { name: body.name }, { new: true });
+    const updatedBoard = await Board.findByIdAndUpdate(
+      req.params.id,
+      { name: body.name },
+      { new: true }
+    );
 
     if (!updatedBoard) {
       return res.status(404).json({

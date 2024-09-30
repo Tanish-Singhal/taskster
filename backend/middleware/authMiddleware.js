@@ -27,13 +27,12 @@ const authMiddleware = async (req, res, next) => {
 
     req.userId = decoded.userId;
     next();
-  
-  } catch(error) {
+  } catch (error) {
     return res.status(401).json({
       success: false,
       message: "Invalid token",
     });
   }
-}
+};
 
 module.exports = authMiddleware;

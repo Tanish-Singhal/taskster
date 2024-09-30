@@ -63,7 +63,6 @@ router.post("/signup", async (req, res) => {
       message: "User created successfully",
       token: `Bearer ${token}`,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -95,36 +94,35 @@ router.post("/signin", async (req, res) => {
     const existingUser = await User.findOne({
       email: body.email,
     });
-  
+
     if (!existingUser) {
       return res.status(400).json({
         success: false,
         message: "User not found",
       });
     }
-  
+
     const validPassword = await bcrypt.compare(body.password, existingUser.password);
-  
+
     if (!validPassword) {
       return res.status(400).json({
         success: false,
         message: "Invalid password",
       });
     }
-  
+
     const userId = existingUser._id;
-  
+
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-  
+
     res.status(200).json({
       success: true,
       message: "User logged in successfully",
-      
+
       token: `Bearer ${token}`,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -132,7 +130,6 @@ router.post("/signin", async (req, res) => {
       error: "Internal Server Error",
     });
   }
-  
 });
 
 module.exports = router;

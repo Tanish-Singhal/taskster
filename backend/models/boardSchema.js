@@ -5,6 +5,7 @@ const boardSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Please provide a board name"],
+      unique: true,
       minLength: [1, "Board name must be at least 1 character long"],
       maxLength: [20, "Board name must be at most 20 characters long"],
     },
@@ -17,7 +18,6 @@ const boardSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Column",
-        required: true,
       },
     ],
   },

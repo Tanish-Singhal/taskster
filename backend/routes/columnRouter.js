@@ -11,9 +11,8 @@ const columnSchema = zod.object({
   name: zod.string().min(3).max(30),
 });
 
-router.post("/:boardId/new", async (req, res) => {
+router.post("/:boardId", async (req, res) => {
   const body = req.body;
-
   const result = columnSchema.safeParse(body);
 
   if (!result.success) {
@@ -24,6 +23,18 @@ router.post("/:boardId/new", async (req, res) => {
   }
 
   try {
+    const existingColumn = await Column.findOne({
+      name: body.name,
+      boardId: req.params.boardId,
+    });
+
+    if (existingColumn) {
+      return res.status(400).json({
+        success: false,
+        message: "Column already exists",
+      });
+    }
+
     const newColumn = await Column.create({
       name: body.name,
       boardId: req.params.boardId,
@@ -43,6 +54,7 @@ router.post("/:boardId/new", async (req, res) => {
 });
 
 router.get("/:boardId", async (req, res) => {
+  console.log(req);
   try {
     const column = await Column.find({
       boardId: req.params.boardId,
@@ -61,8 +73,18 @@ router.get("/:boardId", async (req, res) => {
 });
 
 router.put("/:boardId/:columnId", async (req, res) => {
+  const body = req.body;
+  const result = columnSchema.safeParse(body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid data",
+    });
+  }
+
   try {
-    const updateColumn = await Column.findByIdAndUpdate(req.params.columnId, req.body, {
+    const updateColumn = await Column.findByIdAndUpdate(req.params.columnId, body, {
       new: true,
     });
 
@@ -88,6 +110,10 @@ router.put("/:boardId/:columnId", async (req, res) => {
 
 router.delete("/:boardId/:columnId", async (req, res) => {
   try {
+    await Task.deleteMany({
+      columnId: req.params.columnId,
+    });
+
     const deletedColumn = await Column.findByIdAndDelete(req.params.columnId);
 
     if (!deletedColumn) {

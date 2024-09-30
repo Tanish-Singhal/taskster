@@ -7,6 +7,7 @@ const columnSchema = new mongoose.Schema(
       required: [true, "Please provide a column name"],
       minLength: [3, "Column name must be at least 3 characters long"],
       maxLength: [30, "Column name must be at most 30 characters long"],
+      unique: true,
     },
     boardId: {
       type: mongoose.Schema.Types.ObjectId,

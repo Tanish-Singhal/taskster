@@ -11,7 +11,7 @@ const boardSchema = zod.object({
   name: zod.string().min(3).max(30),
 });
 
-router.post("/new", async (req, res) => {
+router.post("/", async (req, res) => {
   const body = req.body;
 
   const result = boardSchema.safeParse(body);
@@ -28,6 +28,13 @@ router.post("/new", async (req, res) => {
       name: body.name,
       userId: req.userId,
     });
+
+    if (existingBoard) {
+      return res.status(400).json({
+        success: false,
+        message: "Board already exists",
+      });
+    }
 
     const newBoard = await Board.create({
       name: body.name,

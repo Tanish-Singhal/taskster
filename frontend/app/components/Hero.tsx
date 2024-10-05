@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import HeroImage from "./HeroImage";
 
 const Hero = () => {
   return (
@@ -40,11 +41,12 @@ const Hero = () => {
             </div>
 
             <div className="absolute top-0 -z-10 max-w-screen-lg w-full blur-2xl">
-              <div className="absolute top-24 left-20 sm:left-28 md:left-60 w-60 h-60 bg-violet-600 rounded-full mix-blend-multiply opacity-70 animate-blob filter blur-3xl"></div>
+              <div className="absolute top-24 left-20 sm:left-40 md:left-60 w-60 h-60 bg-violet-600 rounded-full mix-blend-multiply opacity-70 animate-blob filter blur-3xl"></div>
               <div className="absolute hidden md:block top-24 right-72 w-60 h-60 bg-purple-600 rounded-full mix-blend-multiply opacity-70 animate-blob filter blur-3xl"></div>
               <div className="absolute hidden md:block top-24 right-16 w-60 h-60 bg-pink-600 rounded-full mix-blend-multiply opacity-70 animate-blob delay-500 filter blur-3xl"></div>
             </div>
-            
+
+            <HeroImage />
           </div>
         </div>
       </div>

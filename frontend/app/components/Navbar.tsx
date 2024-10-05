@@ -26,7 +26,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-36">
+    <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32">
       <div className="py-4 flex items-center justify-between">
         <Link href="/" className="relative text-white font-semibold text-3xl">
           <Image src={logo} alt="logo" width={150} height={150} />

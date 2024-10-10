@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-neutral-950 overflow-x-hidden scrollbar-hide">
       {/* <Banner /> */}
       <Navbar />
       <Hero />

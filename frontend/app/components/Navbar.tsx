@@ -15,6 +15,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import AnimationContainer from "@/components/animation-container";
 
 const routeList = [
   { href: "#", label: "Features" },
@@ -27,9 +28,9 @@ const Navbar = () => {
 
   return (
     <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32">
-      <div className="py-4 flex items-center justify-between">
+      <AnimationContainer delay={0.2} className="py-4 flex items-center justify-between">
         <Link href="/" className="relative text-white font-semibold text-3xl">
-          <Image src={logo} alt="logo" width={150} height={150} />
+          <Image src={logo} alt="logo" width={130} height={150} />
         </Link>
 
         <div className="flex items-center lg:hidden">
@@ -144,7 +145,7 @@ const Navbar = () => {
             </Link>
           </Button>
         </div>
-      </div>
+      </AnimationContainer>
     </div>
   );
 };

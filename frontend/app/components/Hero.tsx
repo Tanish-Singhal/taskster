@@ -3,13 +3,14 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import HeroImage from "./HeroImage";
+import AnimationContainer from "@/components/animation-container";
 
 const Hero = () => {
   return (
     <div>
-      <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white">
-        <div className="my-12 mt-20 md:mt-24">
-          <div className="text-center space-y-8 mx-4">
+      <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white bg-grid-white/[0.03] relative">
+        <div className="my-12 mt-20 md:mt-20">
+          <AnimationContainer delay={0.4} className="text-center space-y-4 md:space-y-6 mx-4">
             <button>
               <span className="z-10 text-sm text-neutral-100 flex items-center justify-center gap-1 py-1 px-4 border rounded-3xl">
                 ✨ Manage Tasks smarter
@@ -17,8 +18,8 @@ const Hero = () => {
               </span>
             </button>
 
-            <div className="max-w-screen-md mx-auto text-center text-4xl md:text-7xl font-bold">
-              <h1 className="leading-[40px] md:leading-[80px] font-semibold">
+            <div className="max-w-screen-md mx-auto text-center text-[2.4rem] md:text-7xl font-bold">
+              <h1 className="leading-[45px] md:leading-[80px] font-semibold">
                 Conquer your tasks with{" "}
                 <span className="text-transparent px-2 font-bold bg-gradient-to-r from-fuchsia-500 to-orange-600 bg-clip-text">
                   Taskster
@@ -26,28 +27,25 @@ const Hero = () => {
               </h1>
             </div>
 
-            <p className="max-w-screen-sm mx-auto text-xl text-neutral-400">
+            <p className="max-w-screen-sm mx-auto text-lg md:text-xl text-neutral-400">
               Streamline your workflow and boost productivity with our intuitive and powerful task
               management solution.
             </p>
 
-            <div className="space-y-4 md:space-y-0 md:space-x-4">
-              <Button asChild variant="secondary" className="w-5/6 md:w-1/4 font-bold">
+            <div className="py-6 md:py-8">
+              <Button asChild variant="secondary" className="w-3/6 md:w-1/5 font-semibold">
                 <Link href="https://github.com/Tanish-Singhal/taskster" target="_blank">
-                Get Started
-                <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+                  Get Started
+                  <ArrowRight className="size-4 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>
 
-            <div className="absolute top-0 -z-10 max-w-screen-lg w-full blur-2xl">
-              <div className="absolute top-24 left-20 sm:left-40 md:left-60 w-60 h-60 bg-violet-600 rounded-full mix-blend-multiply opacity-70 animate-blob filter blur-3xl"></div>
-              <div className="absolute hidden md:block top-24 right-72 w-60 h-60 bg-purple-600 rounded-full mix-blend-multiply opacity-70 animate-blob filter blur-3xl"></div>
-              <div className="absolute hidden md:block top-24 right-16 w-60 h-60 bg-pink-600 rounded-full mix-blend-multiply opacity-70 animate-blob delay-500 filter blur-3xl"></div>
-            </div>
-
             <HeroImage />
-          </div>
+
+            <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-neutral-950 to-transparent z-40"></div>
+            <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-neutral-950 to-transparent z-50"></div>
+          </AnimationContainer>
         </div>
       </div>
     </div>

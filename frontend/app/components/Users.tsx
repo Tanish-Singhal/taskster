@@ -38,9 +38,9 @@ const COMPANIES = [
 const Users = () => {
   return (
     <div className="py-6 md:py-8">
-      <AnimationContainer>
+      <AnimationContainer delay={0.1}>
         <div className="mx-auto px-4 md:px-24">
-          <h2 className="text-center text-sm md:text-md font-medium font-heading text-neutral-400 uppercase">
+          <h2 className="text-center text-sm md:text-md font-medium font-heading text-muted-foreground uppercase">
             Trusted by the best in the industry
           </h2>
           <div className="mt-8 mx-auto">

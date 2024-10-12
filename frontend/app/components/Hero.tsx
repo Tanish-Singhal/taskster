@@ -7,7 +7,7 @@ import AnimationContainer from "@/components/animation-container";
 
 const Hero = () => {
   return (
-    <div>
+    <div className="pb-6 md:pb-8">
       <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white bg-grid-white/[0.03] relative">
         <div className="my-12 mt-20 md:mt-20">
           <AnimationContainer delay={0.4} className="text-center space-y-4 md:space-y-6 mx-4">
@@ -18,16 +18,16 @@ const Hero = () => {
               </span>
             </button>
 
-            <div className="max-w-screen-md mx-auto text-center text-[2.4rem] md:text-7xl font-bold">
-              <h1 className="leading-[45px] md:leading-[80px] font-semibold">
+            <div className="max-w-screen-md mx-auto text-center text-[2.4rem] md:text-7xl">
+              <h1 className="leading-[45px] md:leading-[80px] font-semibold font-heading">
                 Conquer your tasks with{" "}
-                <span className="text-transparent px-2 font-bold bg-gradient-to-r from-fuchsia-500 to-orange-600 bg-clip-text">
+                <span className="text-transparent px-2 font-bold font-heading bg-gradient-to-r from-fuchsia-500 to-orange-600 bg-clip-text">
                   Taskster
                 </span>
               </h1>
             </div>
 
-            <p className="max-w-screen-sm mx-auto text-lg md:text-xl text-neutral-400">
+            <p className="max-w-screen-sm mx-auto text-lg md:text-xl text-muted-foreground">
               Streamline your workflow and boost productivity with our intuitive and powerful task
               management solution.
             </p>

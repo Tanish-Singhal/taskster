@@ -19,6 +19,9 @@ const HeroImage = () => {
         />
 
         <BorderBeam size={350} duration={5} delay={5} />
+
+        <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-neutral-950 to-transparent z-40"></div>
+        <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-neutral-950 to-transparent z-50"></div>
       </div>
     </div>
   );

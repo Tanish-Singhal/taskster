@@ -38,7 +38,7 @@ const Features = () => {
         <div className="py-28 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Features" />
 
-          <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 text-white">
+          <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 sm:mt-8 text-white">
             Manage Tasks Like a Pro
           </h2>
           <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-screen-md">

@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import AmazonLogo from "@/public/icons8-amazon.svg";
 import AppleLogo from "@/public/icons8-apple.svg";
-import TCSLogo from "@/public/tcs.png";
+import MetaLogo from "@/public/META.D.svg";
 import NetflixLogo from "@/public/icons8-netflix.svg";
 import MicrosoftLogo from "@/public/icons8-microsoft.svg";
 import NvidiaLogo from "@/public/icons8-nvidia.svg";
@@ -30,14 +30,14 @@ const COMPANIES = [
     logo: AmazonLogo,
   },
   {
-    name: "Tata Consultancy Services",
-    logo: TCSLogo,
-  },
+    name: "Meta",
+    logo: MetaLogo,  
+  }
 ];
 
 const Users = () => {
   return (
-    <div className="py-6 md:py-8">
+    <div className="pt-6 md:pt-8 pb-14 md:pb-20">
       <AnimationContainer delay={0.1}>
         <div className="mx-auto px-4 md:px-24">
           <h2 className="text-center text-sm md:text-md font-medium font-heading text-muted-foreground uppercase">
@@ -53,11 +53,12 @@ const Users = () => {
                   <Image
                     src={company.logo}
                     alt={company.name}
-                    width={35}
-                    height={35}
+                    width={33}
+                    height={33}
                     quality={100}
+                    className="w-9 h-9 sm:w-12 sm:h-12"
                   />
-                  <p className="text-md">{company.name}</p>
+                  <p className="text-sm md:text-xl">{company.name}</p>
                 </li>
               ))}
             </ul>

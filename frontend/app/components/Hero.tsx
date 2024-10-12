@@ -11,8 +11,8 @@ const Hero = () => {
       <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white bg-grid-white/[0.03] relative">
         <div className="my-12 mt-20 md:mt-20">
           <AnimationContainer delay={0.4} className="text-center space-y-4 md:space-y-6 mx-4">
-            <button>
-              <span className="z-10 text-sm text-neutral-100 flex items-center justify-center gap-1 py-1 px-4 border rounded-3xl">
+            <button className="group">
+              <span className="z-10 text-sm text-neutral-100 flex items-center justify-center gap-1 py-1 px-4 border border-neutral-500 rounded-3xl">
                 ✨ Manage Tasks smarter
                 <ArrowRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
               </span>
@@ -33,10 +33,14 @@ const Hero = () => {
             </p>
 
             <div className="py-6 md:py-8">
-              <Button asChild variant="secondary" className="w-3/6 md:w-1/5 font-semibold">
-                <Link href="https://github.com/Tanish-Singhal/taskster" target="_blank">
+              <Button variant="secondary" className="group w-3/6 md:w-1/5 font-semibold">
+                <Link
+                  href="https://github.com/Tanish-Singhal/taskster"
+                  target="_blank"
+                  className="flex items-center"
+                >
                   Get Started
-                  <ArrowRight className="size-4 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+                  <ArrowRight className="size-4 ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>

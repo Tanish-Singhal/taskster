@@ -40,12 +40,14 @@ const Hero = () => {
                 </Link>
               </Button>
             </div>
-
-            <HeroImage />
-
-            <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-neutral-950 to-transparent z-40"></div>
-            <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-neutral-950 to-transparent z-50"></div>
           </AnimationContainer>
+
+          <AnimationContainer delay={0.6}>
+            <HeroImage />
+          </AnimationContainer>
+
+          <div className="absolute -bottom-4 inset-x-0 w-full h-1/2 bg-gradient-to-t from-neutral-950 to-transparent z-40"></div>
+          <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-neutral-950 to-transparent z-50"></div>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
 import React from "react";
-import { div } from "framer-motion/client";
 
 interface FeaturesProps {
   icon: string;

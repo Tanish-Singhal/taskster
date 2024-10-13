@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import heroImage from "@/public/heroImage.png";
-import { BorderBeam } from "@/components/magicui/border-beam";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 const HeroImage = () => {
   return (

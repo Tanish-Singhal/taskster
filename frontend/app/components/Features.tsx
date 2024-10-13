@@ -48,7 +48,7 @@ const Features = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-xl mt-12">
             {featureList.map(({ icon, title, description }) => (
-              <AnimationContainer key={title} delay={0.1}>
+              <AnimationContainer key={title} delay={0.2}>
                 <div>
                   <Card className="h-full bg-neutral-950 border-0 shadow-none">
                     <CardHeader className="flex justify-center items-center">

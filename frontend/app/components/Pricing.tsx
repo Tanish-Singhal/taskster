@@ -21,7 +21,7 @@ const Pricing = () => {
             contribute and customize Taskster to meet your needs.
           </p>
 
-          <AnimationContainer delay={0.1}>
+          <AnimationContainer delay={0.2}>
             <div className="py-10 md:py-12">
               <Button variant="secondary" className="group font-semibold">
                 <Link

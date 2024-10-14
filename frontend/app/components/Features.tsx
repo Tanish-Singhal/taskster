@@ -35,7 +35,7 @@ const Features = () => {
   return (
     <div>
       <AnimationContainer delay={0.1}>
-        <div className="py-28 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
+        <div className="py-32 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Features" />
 
           <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 sm:mt-8 text-white">
@@ -47,24 +47,24 @@ const Features = () => {
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-screen-xl mt-12">
-            {featureList.map(({ icon, title, description }) => (
-              <AnimationContainer key={title} delay={0.2}>
+            {featureList.map((feature, index) => (
+              <AnimationContainer key={index} delay={0.2}>
                 <div>
                   <Card className="h-full bg-neutral-950 border-0 shadow-none">
                     <CardHeader className="flex justify-center items-center">
                       <div className="bg-purple-500/30 p-2 rounded-full ring-8 ring-purple-500/20 mb-4">
                         <Icon
-                          name={icon as keyof typeof icons}
+                          name={feature.icon as keyof typeof icons}
                           size={24}
                           className="text-purple-500"
                         />
                       </div>
 
-                      <CardTitle className="text-neutral-100">{title}</CardTitle>
+                      <CardTitle className="text-neutral-100">{feature.title}</CardTitle>
                     </CardHeader>
 
                     <CardContent className="text-muted-foreground text-center">
-                      {description}
+                      {feature.description}
                     </CardContent>
                   </Card>
                 </div>

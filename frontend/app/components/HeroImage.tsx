@@ -6,7 +6,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 const HeroImage = () => {
   return (
     <div className="relative pt-14 pb-20 md:py-20 px-2 bg-transparent w-full">
-      <div className="absolute top-10 w-3/4 left-20 right-20 mx-auto h-full bg-gradient-to-r from-violet-600 to-fuchsia-600 -z-10 blur-[10rem]"></div>
+      <div className="absolute top-8 w-3/4 left-20 right-20 mx-auto h-full bg-gradient-to-r from-violet-600 to-fuchsia-600 -z-10 blur-[6rem]"></div>
 
       <div className="-m-2 rounded-xl p-2 ring-1 ring-inset ring-foreground/20 lg:-m-4 lg:rounded-2xl bg-opacity-50 backdrop-blur-3xl">
         <Image

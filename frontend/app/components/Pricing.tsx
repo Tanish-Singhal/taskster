@@ -9,7 +9,7 @@ const Pricing = () => {
   return (
     <div>
       <AnimationContainer delay={0.1}>
-        <div className="py-28 pt-14 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
+        <div className="py-32 pt-14 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Pricing" />
 
           <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 sm:mt-8 text-white">

@@ -1,4 +1,5 @@
 // import Banner from "./components/Banner";
+import CTASection from "./components/CTASection";
 import Features from "./components/Features";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -16,6 +17,7 @@ export default function Home() {
       <Features />
       <Pricing />
       <Testimonials />
+      <CTASection />
     </div>
   );
 }

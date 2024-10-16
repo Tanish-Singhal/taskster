@@ -7,7 +7,7 @@ import React from "react";
 
 const Pricing = () => {
   return (
-    <div>
+    <div id="Pricing">
       <AnimationContainer delay={0.1}>
         <div className="py-28 pt-12 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Pricing" />

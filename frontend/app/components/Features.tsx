@@ -33,7 +33,7 @@ const featureList: FeaturesProps[] = [
 
 const Features = () => {
   return (
-    <div>
+    <div id="Features">
       <AnimationContainer delay={0.1}>
         <div className="py-32 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Features" />

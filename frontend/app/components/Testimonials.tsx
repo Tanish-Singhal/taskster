@@ -5,7 +5,7 @@ import { MarqueeDemo } from "./MarqueeDemo";
 
 const Testimonials = () => {
   return (
-    <div>
+    <div id="Testimonials">
       <AnimationContainer delay={0.1}>
         <div className="sm:py-28 py-12 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Testimonials" />

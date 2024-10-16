@@ -18,16 +18,16 @@ import { Separator } from "@/components/ui/separator";
 import AnimationContainer from "@/components/animation-container";
 
 const routeList = [
-  { href: "#", label: "Features" },
-  { href: "#", label: "Price" },
-  { href: "#", label: "Help" },
+  { href: "#Features", label: "Features" },
+  { href: "#Pricing", label: "Pricing" },
+  { href: "#Testimonials", label: "Testimonials" }
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32">
+    <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32" id="Home">
       <AnimationContainer delay={0.2} className="py-4 flex items-center justify-between">
         <Link href="/" className="relative text-white font-semibold text-3xl">
           <Image src={logo} alt="logo" width={130} height={150} />

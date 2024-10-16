@@ -1,6 +1,6 @@
 import Link from "next/link";
 import AnimationContainer from "@/components/animation-container";
-import Logo from "@/public/taskster-logo.png";
+import Logo from "@/public/taskster-high-resolution-logo-transparent-copy.png";
 import Image from "next/image";
 
 const Footer = () => {
@@ -36,7 +36,7 @@ const Footer = () => {
         <AnimationContainer delay={0.1}>
           <div className="flex flex-col items-start justify-start md:max-w-[200px]">
             <div className="flex items-start">
-              <Image src={Logo} className="w-10 h-10" alt="Taskster Logo" />
+              <Image src={Logo} className="w-40" alt="Taskster Logo" />
             </div>
             <p className="text-neutral-500 mt-4 text-sm text-start">
               Manage your Tasks with ease.

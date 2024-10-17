@@ -28,7 +28,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32" id="Home">
-      <AnimationContainer delay={0.2} className="py-4 flex items-center justify-between">
+      <AnimationContainer delay={0.2} className="py-3 flex items-center justify-between">
         <Link href="/" className="relative text-white font-semibold text-3xl">
           <Image src={logo} alt="logo" width={130} height={150} />
         </Link>
@@ -36,7 +36,7 @@ const Navbar = () => {
         <div className="flex items-center lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button className="flex items-center">
+              <Button className="flex items-center bg-neutral-950 hover:bg-neutral-900">
                 <Menu className="cursor-pointer w-8 h-8 text-white" />
               </Button>
             </SheetTrigger>
@@ -53,7 +53,7 @@ const Navbar = () => {
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="text-neutral-600 hover:bg-neutral-800 rounded-full transition"
+                    className="text-neutral-100 bg-neutral-900 hover:bg-neutral-700 rounded-full transition"
                   >
                     <X className="w-5 h-5" />
                   </Button>
@@ -86,7 +86,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-center w-full space-x-2">
                   <Button
                     variant="ghost"
-                    className="text-white hover:bg-neutral-800 transition rounded-md"
+                    className="text-white hover:bg-neutral-800 hover:text-white transition rounded-md"
                   >
                     <Link
                       aria-label="Sign In"
@@ -96,12 +96,12 @@ const Navbar = () => {
                       Sign In
                     </Link>
                   </Button>
-                  <Button className="text-black bg-neutral-200 hover:bg-neutral-800 transition rounded-md">
+                  <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white transition rounded-md">
                     <Link
                       aria-label="Get Started"
                       href="https://github.com/Tanish-Singhal/taskster"
                       target="_blank"
-                      className="flex items-center gap-1 hover:text-white"
+                      className="flex items-center gap-1"
                     >
                       Get Started
                     </Link>
@@ -125,7 +125,7 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden lg:flex gap-2">
-          <Button variant="ghost" className="text-white">
+          <Button variant="ghost" className="text-white hover:bg-neutral-800 hover:text-white">
             <Link
               aria-label="Sign In"
               href="https://github.com/nobruf/shadcn-landing-page.git"
@@ -134,7 +134,7 @@ const Navbar = () => {
               Sign In
             </Link>
           </Button>
-          <Button className="text-black bg-neutral-200 hover:bg-neutral-800">
+          <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white">
             <Link
               aria-label="Get Started"
               href="https://github.com/Tanish-Singhal/taskster"

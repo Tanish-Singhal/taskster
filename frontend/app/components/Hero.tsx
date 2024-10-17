@@ -8,7 +8,7 @@ import AnimationContainer from "@/components/animation-container";
 const Hero = () => {
   return (
     <div className="pb-6 md:pb-8">
-      <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white bg-grid-white/[0.03] relative">
+      <div className="bg-neutral-950 backdrop-blur-lg overflow-hidden flex flex-col items-center justify-center text-center text-white bg-grid-white/[0.04] relative">
         <div className="my-12 mt-20 md:mt-20">
           <AnimationContainer delay={0.4} className="text-center space-y-4 md:space-y-6 mx-4">
             <button className="group">
@@ -33,7 +33,7 @@ const Hero = () => {
             </p>
 
             <div className="py-6 md:py-8">
-              <Button variant="secondary" className="group w-3/6 md:w-1/5 font-semibold">
+              <Button className="group w-3/6 md:w-1/5 font-semibold bg-neutral-100 text-black hover:bg-neutral-300">
                 <Link
                   href="https://github.com/Tanish-Singhal/taskster"
                   target="_blank"

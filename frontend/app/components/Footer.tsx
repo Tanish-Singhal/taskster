@@ -29,7 +29,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="flex flex-col relative items-center justify-center border-t border-neutral-700 pt-16 pb-8 md:pb-0 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] mb-8">
+    <footer className="flex flex-col relative items-center justify-center border-t border-neutral-700 pt-16 pb-8 md:pb-0 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] mb-4">
       <div className="absolute top-0 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1.5 bg-white rounded-full"></div>
 
       <div className="grid gap-8 xl:grid-cols-3 xl:gap-8 w-full">
@@ -38,9 +38,7 @@ const Footer = () => {
             <div className="flex items-start">
               <Image src={Logo} className="w-40" alt="Taskster Logo" />
             </div>
-            <p className="text-neutral-500 mt-4 text-sm text-start">
-              Manage your Tasks with ease.
-            </p>
+            <p className="text-neutral-500 mt-4 text-sm text-start">Manage your Tasks with ease.</p>
             <span className="mt-4 text-neutral-200 text-sm flex items-center">
               Made by{" "}
               <Link href="https://tanish-singhal.vercel.app/" className="font-semibold ml-1">
@@ -58,7 +56,10 @@ const Footer = () => {
                 <ul className="mt-4 text-sm text-muted-foreground">
                   {links.product.map((item, idx) => (
                     <li className="mt-2" key={idx}>
-                      <Link href={item.href} className="hover:text-neutral-300 text-neutral-500 transition-all duration-300">
+                      <Link
+                        href={item.href}
+                        className="hover:text-neutral-200 text-neutral-500 transition-all duration-300"
+                      >
                         {item.label}
                       </Link>
                     </li>
@@ -67,12 +68,15 @@ const Footer = () => {
               </div>
             </AnimationContainer>
             <AnimationContainer delay={0.3}>
-              <div className="mt-10 md:mt-0 flex flex-col">
+              <div className="mt-10 md:mt-0">
                 <h3 className="text-base font-medium text-white">Integrations</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   {links.integrations.map((item, idx) => (
                     <li className="mt-2" key={idx}>
-                      <Link href={item.href} className="hover:text-neutral-300 text-neutral-500 transition-all duration-300">
+                      <Link
+                        href={item.href}
+                        className="hover:text-neutral-200 text-neutral-500 transition-all duration-300"
+                      >
                         {item.label}
                       </Link>
                     </li>
@@ -88,7 +92,10 @@ const Footer = () => {
                 <ul className="mt-4 text-sm text-muted-foreground">
                   {links.resources.map((item, idx) => (
                     <li className="mt-2" key={idx}>
-                      <Link href={item.href} className="hover:text-neutral-300 text-neutral-500 transition-all duration-300">
+                      <Link
+                        href={item.href}
+                        className="hover:text-neutral-200 text-neutral-500 transition-all duration-300"
+                      >
                         {item.label}
                       </Link>
                     </li>
@@ -97,12 +104,15 @@ const Footer = () => {
               </div>
             </AnimationContainer>
             <AnimationContainer delay={0.5}>
-              <div className="mt-10 md:mt-0 flex flex-col">
+              <div className="mt-24 md:mt-0">
                 <h3 className="text-base font-medium text-white">Company</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   {links.company.map((item, idx) => (
                     <li className="mt-2" key={idx}>
-                      <Link href={item.href} className="hover:text-neutral-300 text-neutral-500 transition-all duration-300">
+                      <Link
+                        href={item.href}
+                        className="hover:text-neutral-200 text-neutral-500 transition-all duration-300"
+                      >
                         {item.label}
                       </Link>
                     </li>
@@ -116,7 +126,7 @@ const Footer = () => {
 
       <div className="mt-8 border-t border-neutral-800 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
         <AnimationContainer delay={0.6}>
-          <p className="text-sm text-muted-foreground mt-8 md:mt-0">
+          <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Taskster INC. All rights reserved.
           </p>
         </AnimationContainer>

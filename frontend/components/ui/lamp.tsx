@@ -42,7 +42,7 @@ export default function LampDemo() {
           ease: "easeInOut",
         }}
       >
-        <Button variant="secondary" className="group font-semibold mt-16 sm:mt-20">
+        <Button className="group font-semibold mt-16 sm:mt-20 bg-neutral-100 text-black hover:bg-neutral-300">
           <Link
             href="https://github.com/Tanish-Singhal/taskster"
             target="_blank"

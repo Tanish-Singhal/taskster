@@ -9,7 +9,7 @@ const Pricing = () => {
   return (
     <div id="Pricing">
       <AnimationContainer delay={0.1}>
-        <div className="py-28 pt-12 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
+        <div className="py-24 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Pricing" />
 
           <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 sm:mt-8 text-white">
@@ -23,7 +23,7 @@ const Pricing = () => {
 
           <AnimationContainer delay={0.2}>
             <div className="py-10 md:py-12">
-              <Button variant="secondary" className="group font-semibold">
+              <Button className="group font-semibold bg-neutral-100 text-black hover:bg-neutral-300">
                 <Link
                   href="https://github.com/Tanish-Singhal/taskster"
                   target="_blank"

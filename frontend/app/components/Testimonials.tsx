@@ -7,7 +7,7 @@ const Testimonials = () => {
   return (
     <div id="Testimonials">
       <AnimationContainer delay={0.1}>
-        <div className="sm:py-28 py-12 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
+        <div className="sm:py-24 py-12 bg-neutral-950 flex flex-col items-center justify-center text-center text-white">
           <MagicBadge title="Testimonials" />
 
           <h2 className="text-center lg:text-center text-3xl md:text-5xl leading-[1.1] font-medium font-heading text-foreground mt-6 sm:mt-8 text-white">

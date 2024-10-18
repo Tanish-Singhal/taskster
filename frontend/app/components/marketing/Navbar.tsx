@@ -16,11 +16,13 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import AnimationContainer from "@/components/animation-container";
+import { ModeToggle } from "../ModeToggle";
 
 const routeList = [
   { href: "#Features", label: "Features" },
   { href: "#Pricing", label: "Pricing" },
-  { href: "#Testimonials", label: "Testimonials" }
+  { href: "#Testimonials", label: "Testimonials" },
+  { href: "#Contact", label: "Contact" },
 ];
 
 const Navbar = () => {
@@ -29,15 +31,15 @@ const Navbar = () => {
   return (
     <div className="bg-neutral-950 backdrop-blur-lg px-4 sm:px-10 lg:px-32" id="Home">
       <AnimationContainer delay={0.2} className="py-3 flex items-center justify-between">
-        <Link href="/" className="relative text-white font-semibold text-3xl">
-          <Image src={logo} alt="logo" width={130} height={150} />
+        <Link href="/" className="relative text-white font-semibold text-3xl mr-28">
+          <Image src={logo} alt="logo" className="max-w-[120px] min-w-[120px] h-auto" />
         </Link>
 
         <div className="flex items-center lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button className="flex items-center bg-neutral-950 hover:bg-neutral-900">
-                <Menu className="cursor-pointer w-8 h-8 text-white" />
+                <Menu className="cursor-pointer w-10 text-white" />
               </Button>
             </SheetTrigger>
 
@@ -84,28 +86,19 @@ const Navbar = () => {
               <div className="flex flex-col items-center w-full mt-4">
                 <Separator className="my-4" />
                 <div className="flex items-center justify-center w-full space-x-2">
-                  <Button
-                    variant="ghost"
-                    className="text-white hover:bg-neutral-800 hover:text-white transition rounded-md"
-                  >
-                    <Link
-                      aria-label="Sign In"
-                      href="https://github.com/nobruf/shadcn-landing-page.git"
-                      target="_blank"
+                  <Link href="/signin">
+                    <Button
+                      variant="ghost"
+                      className="text-white hover:bg-neutral-800 hover:text-white transition rounded-md"
                     >
                       Sign In
-                    </Link>
-                  </Button>
-                  <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white transition rounded-md">
-                    <Link
-                      aria-label="Get Started"
-                      href="https://github.com/Tanish-Singhal/taskster"
-                      target="_blank"
-                      className="flex items-center gap-1"
-                    >
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white transition rounded-md">
                       Get Started
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </SheetContent>
@@ -125,25 +118,17 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden lg:flex gap-2">
-          <Button variant="ghost" className="text-white hover:bg-neutral-800 hover:text-white">
-            <Link
-              aria-label="Sign In"
-              href="https://github.com/nobruf/shadcn-landing-page.git"
-              target="_blank"
-            >
+          <ModeToggle />
+          <Link href="/signin">
+            <Button variant="ghost" className="text-white hover:bg-neutral-800 hover:text-white">
               Sign In
-            </Link>
-          </Button>
-          <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white">
-            <Link
-              aria-label="Get Started"
-              href="https://github.com/Tanish-Singhal/taskster"
-              target="_blank"
-              className="flex items-center gap-1 hover:text-white"
-            >
+            </Button>
+          </Link>
+          <Link href="/signup">
+            <Button className="text-black bg-neutral-200 hover:bg-neutral-800 hover:text-white">
               Get Started
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </AnimationContainer>
     </div>

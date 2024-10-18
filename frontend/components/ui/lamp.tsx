@@ -11,7 +11,7 @@ export default function LampDemo() {
     <LampContainer>
       <motion.h1
         initial={{ opacity: 0.5, y: 100 }}
-        whileInView={{ opacity: 1, y: 20 }}
+        whileInView={{ opacity: 1, y: 10 }}
         transition={{
           delay: 0.3,
           duration: 0.8,
@@ -23,19 +23,19 @@ export default function LampDemo() {
       </motion.h1>
       <motion.p
         initial={{ opacity: 0.5, y: 100 }}
-        whileInView={{ opacity: 1, y: 10 }}
+        whileInView={{ opacity: 1, y: 1 }}
         transition={{
           delay: 0.3,
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="mt-8 text-center lg:text-center text-xl text-muted-foreground max-w-screen-lg sm:mt-12"
+        className="mt-8 text-center lg:text-center text-xl text-muted-foreground max-w-screen-lg sm:mt-10"
       >
         Experience the cutting-edge solution that transforms how you handle your tasks and helps you stay organized and productive.
       </motion.p>
       <motion.div
         initial={{ opacity: 0.5, y: 100 }}
-        whileInView={{ opacity: 1, y:10 }}
+        whileInView={{ opacity: 1, y: 1 }}
         transition={{
           delay: 0.3,
           duration: 0.8,
@@ -44,8 +44,7 @@ export default function LampDemo() {
       >
         <Button className="group font-semibold mt-16 sm:mt-20 bg-neutral-100 text-black hover:bg-neutral-300">
           <Link
-            href="https://github.com/Tanish-Singhal/taskster"
-            target="_blank"
+            href="/signup"
             className="flex items-center"
           >
             Get Started

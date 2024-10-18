@@ -11,7 +11,7 @@ const Footer = () => {
       { href: "#Testimonials", label: "Testimonials" },
       { href: "#Home", label: "Home" },
     ],
-    integrations: [
+    contact: [
       { href: "https://tanish-singhal.vercel.app", label: "Portfolio" },
       { href: "https://twitter.com/TanishSing44334", label: "Twitter" },
       { href: "https://discord.com/users/tanish_002/", label: "Discord" },
@@ -29,7 +29,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="flex flex-col relative items-center justify-center border-t border-neutral-700 pt-16 pb-8 md:pb-0 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] mb-4">
+    <footer id="Contact" className="flex flex-col relative items-center justify-center border-t border-neutral-700 pt-16 pb-8 md:pb-0 px-6 lg:px-8 w-full max-w-6xl mx-auto lg:pt-32 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] mb-4">
       <div className="absolute top-0 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1.5 bg-white rounded-full"></div>
 
       <div className="grid gap-8 xl:grid-cols-3 xl:gap-8 w-full">
@@ -69,9 +69,9 @@ const Footer = () => {
             </AnimationContainer>
             <AnimationContainer delay={0.3}>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-base font-medium text-white">Integrations</h3>
+                <h3 className="text-base font-medium text-white">Contact</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
-                  {links.integrations.map((item, idx) => (
+                  {links.contact.map((item, idx) => (
                     <li className="mt-2" key={idx}>
                       <Link
                         href={item.href}

@@ -35,8 +35,7 @@ const Hero = () => {
             <div className="py-6 md:py-8">
               <Button className="group w-3/6 md:w-1/5 font-semibold bg-neutral-100 text-black hover:bg-neutral-300">
                 <Link
-                  href="https://github.com/Tanish-Singhal/taskster"
-                  target="_blank"
+                  href="/signup"
                   className="flex items-center"
                 >
                   Get Started

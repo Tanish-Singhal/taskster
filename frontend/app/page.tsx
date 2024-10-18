@@ -1,12 +1,12 @@
-// import Banner from "../components/Banner";
-import CTASection from "./components/CTASection";
-import Features from "./components/Features";
-import Hero from "./components/Hero";
-import Navbar from "./components/Navbar";
-import Pricing from "./components/Pricing";
-import Testimonials from "./components/Testimonials";
-import Users from "./components/Users";
-import Footer from "./components/Footer";
+// import Banner from "../components/(marketing)/Banner";
+import CTASection from "./components/marketing/CTASection";
+import Features from "./components/marketing/Features";
+import Hero from "./components/marketing/Hero";
+import Navbar from "./components/marketing/Navbar";
+import Pricing from "./components/marketing/Pricing";
+import Testimonials from "./components/marketing/Testimonials";
+import Users from "./components/marketing/Users";
+import Footer from "./components/marketing/Footer";
 
 export default function Marketing() {
   return (

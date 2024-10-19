@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: "Taskster",
@@ -22,6 +23,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+            />
           </ThemeProvider>
         </body>
     </html>

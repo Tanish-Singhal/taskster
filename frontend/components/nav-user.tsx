@@ -1,17 +1,7 @@
-"use client"
+"use client";
 
-import {
-  ChevronsUpDown,
-  LogOut,
-  Settings2,
-  Sparkles,
-} from "lucide-react"
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { ChevronsUpDown, LogOut, Settings2, Sparkles } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,24 +10,72 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { UserSkeleton } from "@/app/components/sidebar/UserSkeleton";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
+export function NavUser() {
+  const { isMobile } = useSidebar();
+  const [user, setUser] = useState<{ username: string; email: string; avatar: string } | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/auth/me`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("taskster-token"),
+            },
+          }
+        );
+        setUser(response.data.user);
+      } catch (err) {
+        setError("Failed to fetch user data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <UserSkeleton />
+      </div>
+    );
   }
-}) {
-  const { isMobile } = useSidebar()
+
+  if (!user) {
+    return <div>{"Failed to fetch the user information"}</div>;
+  }
+
+  const getInitials = (name: string) => {
+    const names = name.split(" ");
+    return names.map((n) => n.charAt(0).toUpperCase()).join("");
+  };
+
+  const initials = getInitials(user.username);
+
+  const getRandomColor = () => {
+    const colors = ["#ff7a92", "#916fd6", "#c359de", "#50cc6d", "#db9251"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  const avatarColor = getRandomColor();
 
   return (
     <SidebarMenu>
@@ -48,12 +86,14 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
+              <div
+                className="flex h-8 w-8 items-center justify-center rounded-lg"
+                style={{ backgroundColor: avatarColor }}
+              >
+                <span className="text-white font-semibold">{initials}</span>
+              </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-semibold">{user.username}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -67,12 +107,14 @@ export function NavUser({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
+                <div
+                  className="flex h-8 w-8 items-center justify-center rounded-lg"
+                  style={{ backgroundColor: avatarColor }}
+                >
+                  <span className="text-white font-semibold">{initials}</span>
+                </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate font-semibold">{user.username}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -97,5 +139,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

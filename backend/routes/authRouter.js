@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const User = require("../models/userSchema");
+const authMiddleware = require("../middleware/authMiddleware");
 
 dotenv.config();
 
@@ -131,5 +132,33 @@ router.post("/signin", async (req, res) => {
     });
   }
 });
+
+router.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User found",
+      user: {
+        username: user.username,
+        email: user.email,
+      }
+    });
+  } catch(error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while fetching user",
+      error: "Internal Server Error",
+    });
+  }
+})
 
 module.exports = router;

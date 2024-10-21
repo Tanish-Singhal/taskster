@@ -36,6 +36,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center lg:hidden">
+          <ModeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button className="flex items-center bg-neutral-950 hover:bg-neutral-900">

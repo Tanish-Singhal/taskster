@@ -1,23 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
-  Building,
   CircleCheckBig,
-  CircleDollarSign,
-  Home,
   LayoutDashboard,
   LifeBuoy,
-  NotebookPen,
   Search,
   Send,
   Settings2,
-  SquareTerminal,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavBoards } from "@/components/nav-boards";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -29,18 +24,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   items: [
     {
       title: "Dashboard",
-      url: "",
+      url: "/dashboard",
       icon: LayoutDashboard,
     },
     {
@@ -59,33 +49,6 @@ const data = {
       icon: Settings2,
     },
   ],
-  projects: [
-    {
-      name: "Startup",
-      url: "/startup",
-      icon: SquareTerminal
-    },
-    {
-      name: "Self Learning",
-      url: "/self-learning",
-      icon: NotebookPen
-    },
-    {
-      name: "Office",
-      url: "/office",
-      icon: Building,
-    },
-    {
-      name: "Freelancing",
-      url: "/freelancing",
-      icon: CircleDollarSign
-    },
-    {
-      name: "Home",
-      url: "/home",
-      icon: Home,
-    },
-  ],
   navSecondary: [
     {
       title: "Support",
@@ -98,7 +61,7 @@ const data = {
       icon: Send,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -109,11 +72,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <div>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <CircleCheckBig className="size-4" />
+                  <CircleCheckBig className="size-5" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Taskster</span>
-                  <span className="truncate text-xs">Tanish Workspace</span>
+                  <span className="truncate font-semibold text-lg">Taskster</span>
                 </div>
               </div>
             </SidebarMenuButton>
@@ -121,7 +83,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-      <SidebarGroup>
+        <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -138,12 +100,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <NavProjects projects={data.projects} />
+        <NavBoards />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

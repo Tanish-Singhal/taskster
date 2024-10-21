@@ -74,7 +74,7 @@ export function SignupForm() {
       );
 
       const token = response.data.token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("taskster-token", token);
 
       reset();
 

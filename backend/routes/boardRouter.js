@@ -56,13 +56,13 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const board = await Board.find({
+    const boards = await Board.find({
       userId: req.userId,
     }).populate("columnId");
 
     res.status(200).json({
       success: true,
-      data: board,
+      data: boards,
     });
   } catch (error) {
     res.status(500).json({

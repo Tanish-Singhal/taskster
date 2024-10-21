@@ -2,9 +2,9 @@
 
 import Dashboard from '@/app/components/dashboard/dashboard';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const page = () => {
     <div>
       <Dashboard />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;

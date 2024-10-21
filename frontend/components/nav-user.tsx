@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronsUpDown, LogOut, Settings2, Sparkles } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,11 +22,8 @@ import { UserSkeleton } from "@/app/components/sidebar/UserSkeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const [user, setUser] = useState<{ username: string; email: string; avatar: string } | null>(
-    null
-  );
+  const [user, setUser] = useState<{ username: string; email: string; avatar: string } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,8 +37,8 @@ export function NavUser() {
           }
         );
         setUser(response.data.user);
-      } catch (err) {
-        setError("Failed to fetch user data");
+      } catch {
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -52,15 +48,11 @@ export function NavUser() {
   }, []);
 
   if (loading) {
-    return (
-      <div>
-        <UserSkeleton />
-      </div>
-    );
+    return <UserSkeleton />;
   }
 
   if (!user) {
-    return <div>{"Failed to fetch the user information"}</div>;
+    return <div className="text-neutral-300">{"Failed to fetch the user information"}</div>;
   }
 
   const getInitials = (name: string) => {

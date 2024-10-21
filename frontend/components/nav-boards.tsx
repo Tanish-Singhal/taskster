@@ -1,7 +1,6 @@
 "use client";
 
 import { Folder, MoreHorizontal, Trash2 } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,6 +51,7 @@ export function NavBoards() {
         setBoards(formattedData);
       } catch (err) {
         setError("Failed to fetch boards data");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -70,6 +70,17 @@ export function NavBoards() {
             <BoardNameSkeleton />
             <BoardNameSkeleton />
           </SidebarMenu>
+        </SidebarGroup>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel>Boards</SidebarGroupLabel>
+          <SidebarMenu className="text-neutral-300">{error}</SidebarMenu>
         </SidebarGroup>
       </div>
     );

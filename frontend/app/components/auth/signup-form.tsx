@@ -17,12 +17,6 @@ import { toast } from "react-hot-toast";
 export function SignupForm() {
   const router = useRouter();
 
-  // const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState<string | null>(null);
-  // const [success, setSuccess] = useState<string | null>(null);
-  // const [submitting, isSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -33,34 +27,6 @@ export function SignupForm() {
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
   });
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setError(null);
-  //   isSubmitting(true);
-
-  //   try {
-  //     const response = await axios.post("/api/v1/auth/signup", {
-  //       username,
-  //       email,
-  //       password,
-  //     });
-
-  //     console.log(response.data);
-  //     setTimeout(() => router.push("/signin"), 2000);
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error) && error.response) {
-  //       setError(error.response.data.message || "Something went wrong");
-  //     } else {
-  //       setError("Something went wrong");
-  //     }
-  //   } finally {
-  //     setUsername("");
-  //     setEmail("");
-  //     setPassword("");
-  //     isSubmitting(false);
-  //   }
-  // };
 
   const onSubmit = async (data: SignupSchema) => {
     try {
@@ -123,17 +89,12 @@ export function SignupForm() {
             <div className="grid gap-2">
               <Label htmlFor="text">Username</Label>
               <Input
-                // value={username}
                 {...register("username", {
                   required: "This field is required",
                 })}
                 id="text"
                 type="text"
                 placeholder="Trevor"
-                // required
-                // onChange={(e) => {
-                //   setUsername(e.target.value);
-                // }}
               />
               {errors.username && (
                 <p className="text-red-500 text-sm">{`${errors.username.message}`}</p>
@@ -143,17 +104,12 @@ export function SignupForm() {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                // value={email}
                 {...register("email", {
                   required: "This field is required",
                 })}
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                // required
-                // onChange={(e) => {
-                //   setEmail(e.target.value);
-                // }}
               />
               {errors.email && <p className="text-red-500 text-sm">{`${errors.email.message}`}</p>}
             </div>
@@ -163,16 +119,11 @@ export function SignupForm() {
 
               <div className="relative">
                 <Input
-                  // value={password}
                   {...register("password", {
                     required: "This field is required",
                   })}
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  // required
-                  // onChange={(e) => {
-                  //   setPassword(e.target.value);
-                  // }}
                 />
                 <button
                   type="button"
@@ -187,12 +138,7 @@ export function SignupForm() {
               )}
             </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              // disabled={submitting}
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Creating Account..." : "Create Account"}
             </Button>
           </div>

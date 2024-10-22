@@ -17,47 +17,20 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { BoardNameSkeleton } from "@/app/components/sidebar/BoardNameSkeleton";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+import { AppDispatch } from "@/store/store";
+import { fetchBoards } from "@/store/slices/boardSlice/boardSlice";
 
 export function NavBoards() {
   const { isMobile } = useSidebar();
-  const [boards, setBoards] = useState<{ name: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchBoards = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("taskster-token"),
-          },
-        }
-      );
-
-      const boardData = response.data.data;
-
-      const formattedData = boardData.map((board: { name: string }) => {
-        return {
-          name: board.name,
-        };
-      });
-
-      setBoards(formattedData);
-    } catch (err) {
-      setError("Failed to fetch boards data, Please refesh the page");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const dispatch = useAppDispatch<AppDispatch>();
+  const { boards, loading, error } = useAppSelector((state) => state.board);
 
   useEffect(() => {
-    fetchBoards();
-  }, []);
+    dispatch(fetchBoards());
+  }, [dispatch]);
 
   if (loading) {
     return (

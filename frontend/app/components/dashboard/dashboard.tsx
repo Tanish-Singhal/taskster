@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BoardButton } from "./BoardButton";
-import axios from "axios";
 import { BoardSkeleton } from "./BoardSkeleton";
 import {
   DropdownMenu,
@@ -10,48 +9,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Folder, MoreHorizontal, Trash2 } from "lucide-react";
-
-interface Board {
-  id: string;
-  name: string;
-}
+import { fetchBoards } from "@/store/slices/boardSlice/boardSlice";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 
 const Dashboard = () => {
-  const [boards, setBoards] = useState<Board[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchBoards = async () => {
-    try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`, {
-        headers: {
-          Authorization: localStorage.getItem("taskster-token"),
-        },
-      });
-
-      setBoards(response.data.data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch boards data, Please refresh the page");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const dispatch = useAppDispatch();
+  const { boards, loading, error } = useAppSelector((state) => state.board);
 
   useEffect(() => {
-    fetchBoards();
-  }, []);
+    dispatch(fetchBoards());
+  }, [dispatch]);
 
-  const refreshBoards = () => {
-    fetchBoards();
-  };
-
-  if (loading) {
+  if (loading) {  
     return (
       <div>
         <div className="flex justify-between">
-          <h1 className="text-neutral-300 font-semibold text-2xl">Boards</h1>
-          <BoardButton onBoardCreated={fetchBoards} />
+          <h1 className="text-neutral-300 font-semibold text-3xl">Boards</h1>
+          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="flex gap-4 my-10 flex-wrap">
           <BoardSkeleton />
@@ -72,7 +46,7 @@ const Dashboard = () => {
           <h1 className="text-sidebar-foreground font-semibold text-3xl flex items-center">
             Boards
           </h1>
-          <BoardButton onBoardCreated={refreshBoards} />
+          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-12 flex justify-center items-center">
           <h2 className="text-4xl text-neutral-500 mx-6 lg:mx-0">{error}</h2>
@@ -88,10 +62,10 @@ const Dashboard = () => {
           <h1 className="text-sidebar-foreground font-semibold text-3xl flex items-center">
             Boards
           </h1>
-          <BoardButton onBoardCreated={refreshBoards} />
+          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-14">
-          <h2 className="text-2xl flex text-neutral-500 font-semibold">No boards available</h2>
+          <h2 className="text-2xl flex text-neutral-500 font-semibold">Create your first board</h2>
         </div>
       </div>
     );
@@ -101,13 +75,13 @@ const Dashboard = () => {
     <div>
       <div className="flex justify-between">
         <h1 className="text-sidebar-foreground font-semibold text-3xl flex items-center">Boards</h1>
-        <BoardButton onBoardCreated={refreshBoards} />
+        <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
       </div>
       <div className="flex gap-4 my-10 flex-wrap">
         {boards.map((board) => (
           <div
             key={board.id}
-            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-40 w-72 p-3 flex flex-col justify-between"
+            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-80 p-3 flex flex-col justify-between"
           >
             <div className="flex justify-end">
               <DropdownMenu>
@@ -127,7 +101,7 @@ const Dashboard = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <h2 className="text-2xl">{board.name}</h2>
+            <h2 className="text-3xl">{board.name}</h2>
           </div>
         ))}
       </div>

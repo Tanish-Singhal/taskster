@@ -52,7 +52,7 @@ export function NavUser() {
   }
 
   if (!user) {
-    return <div className="text-neutral-300">{"Failed to fetch the user information"}</div>;
+    return <div className="text-neutral-500 ml-2">{"Failed to fetch the user data"}</div>;
   }
 
   const getInitials = (name: string) => {

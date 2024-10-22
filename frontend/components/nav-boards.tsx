@@ -18,7 +18,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
-import { FolderKanban } from "lucide-react";
 import axios from "axios";
 import { BoardNameSkeleton } from "@/app/components/sidebar/BoardNameSkeleton";
 
@@ -28,35 +27,35 @@ export function NavBoards() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchBoards = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("taskster-token"),
+          },
+        }
+      );
+
+      const boardData = response.data.data;
+
+      const formattedData = boardData.map((board: { name: string }) => {
+        return {
+          name: board.name,
+        };
+      });
+
+      setBoards(formattedData);
+    } catch (err) {
+      setError("Failed to fetch boards data, Please refesh the page");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBoards = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("taskster-token"),
-            },
-          }
-        );
-
-        const boardData = response.data.data;
-
-        const formattedData = boardData.map((board: { name: string }) => {
-          return {
-            name: board.name,
-          };
-        });
-
-        setBoards(formattedData);
-      } catch (err) {
-        setError("Failed to fetch boards data");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBoards();
   }, []);
 
@@ -66,6 +65,8 @@ export function NavBoards() {
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupLabel>Boards</SidebarGroupLabel>
           <SidebarMenu>
+            <BoardNameSkeleton />
+            <BoardNameSkeleton />
             <BoardNameSkeleton />
             <BoardNameSkeleton />
             <BoardNameSkeleton />
@@ -80,7 +81,7 @@ export function NavBoards() {
       <div>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupLabel>Boards</SidebarGroupLabel>
-          <SidebarMenu className="text-neutral-300">{error}</SidebarMenu>
+          <SidebarMenu className="text-neutral-500 ml-2 my-2">{error}</SidebarMenu>
         </SidebarGroup>
       </div>
     );
@@ -94,7 +95,7 @@ export function NavBoards() {
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={`/boards/${item.name}`}>
-                <FolderKanban />
+                <Folder />
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
@@ -115,8 +116,8 @@ export function NavBoards() {
                   <span>View Board</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
+                <DropdownMenuItem className="bg-red-600 text-white focus:bg-red-800">
+                  <Trash2 />
                   <span>Delete Board</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

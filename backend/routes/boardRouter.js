@@ -123,7 +123,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   const body = req.body;
   const result = boardSchema.safeParse(body);
 
@@ -135,23 +135,38 @@ router.put("/:id", async (req, res) => {
   }
 
   try {
-    const updatedBoard = await Board.findByIdAndUpdate(
-      req.params.id,
-      { name: body.name },
-      { new: true }
-    );
+    const board = await Board.findOne({
+      _id: req.params.id,
+      userId: req.userId,
+    });
 
-    if (!updatedBoard) {
+    if (!board) {
       return res.status(404).json({
         success: false,
         message: "Board not found",
       });
     }
 
+    const existingBoard = await Board.findOne({
+      name: body.name,
+      userId: req.userId,
+      _id: { $ne: req.params.id },
+    });
+
+    if (existingBoard) {
+      return res.status(400).json({
+        success: false,
+        message: "Board with this name already exists",
+      });
+    }
+
+    board.name = body.name;
+    await board.save();
+
     res.status(200).json({
       success: true,
-      message: "Board updated successfully",
-      board: updatedBoard,
+      message: "Board renamed successfully",
+      board: board,
     });
   } catch (error) {
     res.status(500).json({

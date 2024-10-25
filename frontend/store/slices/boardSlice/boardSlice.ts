@@ -54,16 +54,16 @@ export const deleteBoard = createAsyncThunk("boards/deleteBoard", async (boardId
     if (axios.isAxiosError(err) && err.response) {
       toast.error(err.response.data.message, {
         style: {
-          borderRadius: "10px",
-          background: "#171717",
+          borderRadius: "5px",
+          background: "#262626",
           color: "#ffffff",
         },
       });
     } else {
       toast.error("Failed to delete board", {
         style: {
-          borderRadius: "10px",
-          background: "#171717",
+          borderRadius: "5px",
+          background: "#262626",
           color: "#ffffff",
         },
       });
@@ -72,6 +72,52 @@ export const deleteBoard = createAsyncThunk("boards/deleteBoard", async (boardId
     return "Failed to delete board";
   }
 });
+
+export const renameBoard = createAsyncThunk(
+  "boards/renameBoard",
+  async ({ boardId, name }: { boardId: string; name: string }) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards/${boardId}`,
+        { name },
+        {
+          headers: {
+            Authorization: localStorage.getItem("taskster-token"),
+          },
+        }
+      );
+
+      toast.success("Board renamed successfully!", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      return response.data.board;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      } else {
+        toast.error("Failed to rename board", {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      }
+      throw err;
+    }
+  }
+);
 
 const boardSlice = createSlice({
   name: "boards",
@@ -101,6 +147,12 @@ const boardSlice = createSlice({
     builder.addCase(deleteBoard.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "An error occurred";
+    });
+    builder.addCase(renameBoard.fulfilled, (state, action) => {
+      const index = state.boards.findIndex((board) => board._id === action.payload._id);
+      if (index !== -1) {
+        state.boards[index].name = action.payload.name;
+      }
     });
   },
 });

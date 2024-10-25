@@ -15,12 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { createBoardSchema, CreateBoardSchema } from "@/lib/schema/create-board";
 import axios from "axios";
+import { formatBoardName } from "@/lib/utils";
 
-interface BoardButtonProps {
+interface CreateBoardDialogProps {
   onBoardCreated: () => void;
 }
 
-export const BoardButton = ({ onBoardCreated }: BoardButtonProps) => {
+export const CreateBoardDialog = ({ onBoardCreated }: CreateBoardDialogProps) => {
   const [open, setOpen] = useState(false);
 
   const {
@@ -34,7 +35,12 @@ export const BoardButton = ({ onBoardCreated }: BoardButtonProps) => {
 
   const handleCreateBoard = async (data: CreateBoardSchema) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`, data, {
+      const formattedData = {
+        ...data,
+        name: formatBoardName(data.name)
+      };
+
+      await axios.post(`${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`, formattedData, {
         headers: {
           Authorization: localStorage.getItem("taskster-token"),
         },
@@ -95,7 +101,7 @@ export const BoardButton = ({ onBoardCreated }: BoardButtonProps) => {
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Board"}
+              {isSubmitting ? "Creating..." : "Create"}
             </Button>
           </DialogFooter>
         </form>

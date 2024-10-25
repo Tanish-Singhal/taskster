@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BoardButton } from "./BoardButton";
+import { CreateBoardDialog } from "./CreateBoardDialog";
 import { BoardSkeleton } from "./BoardSkeleton";
 import { DeleteBoardDialog } from "./DeleteBoardDialog";
+import { RenameBoardDialog } from "./RenameBoardDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Folder, MoreHorizontal, Trash2 } from "lucide-react";
-import { deleteBoard, fetchBoards } from "@/store/slices/boardSlice/boardSlice";
+import { Folder, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+import { deleteBoard, fetchBoards, renameBoard } from "@/store/slices/boardSlice/boardSlice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 
 const Dashboard = () => {
@@ -18,6 +19,8 @@ const Dashboard = () => {
   const { boards, loading, error } = useAppSelector((state) => state.board);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [boardToDelete, setBoardToDelete] = useState<string | null>(null);
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
+  const [boardToRename, setBoardToRename] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     dispatch(fetchBoards());
@@ -41,15 +44,31 @@ const Dashboard = () => {
     setIsDeleteDialogOpen(false);
   };
 
+  const handleRenameClick = (board: { _id: string; name: string }) => {
+    setBoardToRename({ id: board._id, name: board.name });
+    setIsRenameDialogOpen(true);
+  };
+
+  const handleRename = async (data: { name: string }) => {
+    if (boardToRename) {
+      try {
+        await dispatch(renameBoard({ boardId: boardToRename.id, name: data.name })).unwrap();
+        setIsRenameDialogOpen(false);
+        setBoardToRename(null);
+      } catch {
+        // Handle error silently
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div>
         <div className="flex justify-between">
           <h1 className="text-neutral-300 font-semibold text-3xl">Boards</h1>
-          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
+          <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="flex gap-4 my-10 flex-wrap">
-          <BoardSkeleton />
           <BoardSkeleton />
           <BoardSkeleton />
           <BoardSkeleton />
@@ -67,7 +86,7 @@ const Dashboard = () => {
           <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
             Boards
           </h1>
-          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
+          <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-12 flex justify-center items-center">
           <h2 className="text-4xl lg:text-5xl text-neutral-500 mx-6 lg:mx-0">{error}</h2>
@@ -83,7 +102,7 @@ const Dashboard = () => {
           <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
             Boards
           </h1>
-          <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
+          <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-14">
           <h2 className="text-4xl lg:text-5xl flex justify-center text-neutral-500">
@@ -100,13 +119,13 @@ const Dashboard = () => {
         <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
           Boards
         </h1>
-        <BoardButton onBoardCreated={() => dispatch(fetchBoards())} />
+        <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
       </div>
       <div className="flex gap-4 my-10 flex-wrap">
         {boards.map((board) => (
           <div
             key={board._id}
-            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-80 p-3 flex flex-col justify-between"
+            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-72 p-3 flex flex-col justify-between"
           >
             <div className="flex justify-end">
               <DropdownMenu>
@@ -114,9 +133,13 @@ const Dashboard = () => {
                   <MoreHorizontal className="h-4 w-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48" align="start">
-                  <DropdownMenuItem>
+                <DropdownMenuItem>
                     <Folder className="text-muted-foreground" />
-                    <span>View Board</span>
+                    <span>Open</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleRenameClick(board)}>
+                    <SquarePen className="text-muted-foreground" />
+                    <span>Rename</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -138,6 +161,15 @@ const Dashboard = () => {
         isOpen={isDeleteDialogOpen}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
+      />
+      <RenameBoardDialog
+        isOpen={isRenameDialogOpen}
+        onClose={() => {
+          setIsRenameDialogOpen(false);
+          setBoardToRename(null);
+        }}
+        onRename={handleRename}
+        currentName={boardToRename?.name || ""}
       />
     </div>
   );

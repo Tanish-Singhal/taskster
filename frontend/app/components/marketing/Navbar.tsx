@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import AnimationContainer from "@/components/animation-container";
-import { ModeToggle } from "../ModeToggle";
 
 const routeList = [
   { href: "#Features", label: "Features" },
@@ -36,7 +35,6 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center lg:hidden">
-          <ModeToggle />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button className="flex items-center bg-neutral-950 hover:bg-neutral-900">
@@ -119,7 +117,6 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden lg:flex gap-2">
-          <ModeToggle />
           <Link href="/signin">
             <Button variant="ghost" className="text-white hover:bg-neutral-800 hover:text-white">
               Sign In

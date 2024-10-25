@@ -63,9 +63,9 @@ export function NavUser() {
     try {
       setIsLoggingOut(true);
       await dispatch(logoutUser()).unwrap();
-      
+
       localStorage.removeItem("taskster-token");
-      
+
       toast.success("Logged out successfully!", {
         style: {
           borderRadius: "5px",

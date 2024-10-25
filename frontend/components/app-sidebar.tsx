@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   LayoutDashboard,
-  LifeBuoy,
   Search,
   Send,
   Settings2,
@@ -50,11 +49,6 @@ const data = {
     },
   ],
   navSecondary: [
-    {
-      title: "Support",
-      url: "/support",
-      icon: LifeBuoy,
-    },
     {
       title: "Feedback",
       url: "/feedback",

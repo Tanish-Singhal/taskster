@@ -53,7 +53,7 @@ export function SignupForm() {
       });
 
       setTimeout(() => {
-        router.push("/signin");
+        router.push("/dashboard");
       }, 1000);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

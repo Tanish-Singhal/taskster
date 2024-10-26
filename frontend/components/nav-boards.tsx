@@ -120,7 +120,7 @@ export function NavBoards() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
-                    className="bg-red-600 text-white focus:bg-red-800"
+                    className="bg-red-600 text-white focus:bg-red-700 focus:text-white"
                     onClick={() => handleDeleteClick(item._id)}
                   >
                     <Trash2 />

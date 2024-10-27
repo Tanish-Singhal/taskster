@@ -26,13 +26,13 @@ import { fetchUser } from "@/store/slices/userSlice/userSlice";
 export function NavUser() {
   const { isMobile } = useSidebar();
   const dispatch = useAppDispatch();
-  const { user, loading, error } = useAppSelector((state) => state.user);
+  const { user, loading, error, initialized } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    if (!user) {
+    if (!initialized) {
       dispatch(fetchUser());
     }
-  }, [dispatch, user]);
+  }, [dispatch, initialized]);
 
   if (loading || !user) {
     return <UserSkeleton />;
@@ -99,7 +99,9 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              className="bg-red-600 text-white focus:bg-red-800"
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

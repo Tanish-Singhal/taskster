@@ -28,7 +28,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
     <StoreProvider>
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset className="overflow-x-hidden">
+        <SidebarInset className="overflow-x-hidden overflow-y-hidden">
           <header className="flex h-16 shrink-0 items-center gap-2">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
@@ -42,7 +42,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
               </Breadcrumb> */}
             </div>
           </header>
-          <div className="px-12 py-5">{children}</div>
+          <div className="px-6 md:px-10 md:py-3">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </StoreProvider>

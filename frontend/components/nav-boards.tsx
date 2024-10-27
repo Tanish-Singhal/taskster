@@ -23,17 +23,21 @@ import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { AppDispatch } from "@/store/store";
 import { deleteBoard, fetchBoards } from "@/store/slices/boardSlice/boardSlice";
 import { DeleteBoardDialog } from "@/app/components/dashboard/DeleteBoardDialog";
+import { useRouter } from "next/navigation";
 
 export function NavBoards() {
   const { isMobile } = useSidebar();
   const dispatch = useAppDispatch<AppDispatch>();
-  const { boards, loading, error } = useAppSelector((state) => state.board);
+  const { boards, loading, error, initialized } = useAppSelector((state) => state.board);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [boardToDelete, setBoardToDelete] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    dispatch(fetchBoards());
-  }, [dispatch]);
+    if (!initialized) {
+      dispatch(fetchBoards());
+    }
+  }, [dispatch, initialized]);
 
   const handleDeleteClick = (boardId: string) => {
     setBoardToDelete(boardId);
@@ -53,7 +57,7 @@ export function NavBoards() {
     setIsDeleteDialogOpen(false);
   };
 
-  if (loading) {
+  if (loading || !initialized) {
     return (
       <div>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -81,15 +85,19 @@ export function NavBoards() {
     );
   }
 
+  const handleBoardClick = (boardId: string) => {
+    router.push(`/board/${boardId}`);
+  }
+
   return (
     <>
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel>Boards</SidebarGroupLabel>
         <SidebarMenu>
           {boards.map((item) => (
-            <SidebarMenuItem key={item.name}>
+            <SidebarMenuItem key={item._id}>
               <SidebarMenuButton asChild>
-                <a href={`/boards/${item.name}`}>
+                <a onClick={() => handleBoardClick(item._id)}>
                   <Folder />
                   <span>{item.name}</span>
                 </a>
@@ -106,9 +114,9 @@ export function NavBoards() {
                   side={isMobile ? "bottom" : "right"}
                   align={isMobile ? "end" : "start"}
                 >
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleBoardClick(item._id)}>
                     <Folder className="text-muted-foreground" />
-                    <span>View Board</span>
+                    <span>Open</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 

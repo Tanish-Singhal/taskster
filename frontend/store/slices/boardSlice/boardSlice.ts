@@ -11,12 +11,14 @@ interface BoardState {
   boards: Board[];
   loading: boolean;
   error: string | null;
+  initialized: boolean;
 }
 
 const initialState: BoardState = {
   boards: [],
   loading: false,
   error: null,
+  initialized: false,
 };
 
 export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
@@ -131,6 +133,7 @@ const boardSlice = createSlice({
     builder.addCase(fetchBoards.fulfilled, (state, action: PayloadAction<Board[]>) => {
       state.loading = false;
       state.boards = action.payload;
+      state.initialized = true;
     });
     builder.addCase(fetchBoards.rejected, (state, action) => {
       state.loading = false;

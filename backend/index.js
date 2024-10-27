@@ -11,8 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
-  origin: 'https://taskster.vercel.app',
-  // origin: "*",
+  // origin: 'https://taskster.vercel.app',
+  origin: "*",
   optionsSuccessStatus: 200
 };
 

@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {
-  CircleCheckBig,
   LayoutDashboard,
   LifeBuoy,
   Search,
   Send,
   Settings2,
+  Star,
 } from "lucide-react";
 
 import { NavBoards } from "@/components/nav-boards";
@@ -33,14 +33,14 @@ const data = {
       icon: LayoutDashboard,
     },
     {
-      title: "My Tasks",
-      url: "/tasks",
-      icon: CircleCheckBig,
-    },
-    {
       title: "Search",
       url: "/search",
       icon: Search,
+    },
+    {
+      title: "Favourite",
+      url: "/favourite",
+      icon: Star,
     },
     {
       title: "Settings",
@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <div>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <CircleCheckBig className="size-5" />
+                  <Star className="size-5" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold text-lg">Taskster</span>

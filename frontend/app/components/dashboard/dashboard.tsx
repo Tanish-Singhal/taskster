@@ -15,6 +15,7 @@ import {
 import { Folder, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import { deleteBoard, fetchBoards, renameBoard } from "@/store/slices/boardSlice/boardSlice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+import { useRouter } from "next/navigation";
 
 interface Board {
   _id: string;
@@ -22,6 +23,8 @@ interface Board {
 }
 
 const Dashboard = () => {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
   const { boards, loading, error } = useAppSelector((state) => state.board);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -72,10 +75,10 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between">
-          <h1 className="text-neutral-300 font-semibold text-3xl lg:text-5xl">Boards</h1>
+          <h1 className="text-neutral-300 font-semibold text-3xl md:text-5xl">Boards</h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
-        <div className="flex gap-4 my-10 flex-wrap">
+        <div className="flex gap-4 my-10 flex-wrap justify-center md:justify-start">
           <BoardSkeleton />
           <BoardSkeleton />
           <BoardSkeleton />
@@ -90,9 +93,7 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between items-center">
-          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
-            Boards
-          </h1>
+          <h1 className="text-sidebar-foreground font-semibold text-3xl md:text-5xl">Boards</h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-12 flex justify-center items-center">
@@ -106,9 +107,7 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between items-center">
-          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
-            Boards
-          </h1>
+          <h1 className="text-sidebar-foreground font-semibold text-3xl md:text-5xl">Boards</h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-14">
@@ -120,32 +119,41 @@ const Dashboard = () => {
     );
   }
 
+  const handleBoardClick = (boardId: string) => {
+    router.push(`/board/${boardId}`);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
-          Boards
-        </h1>
+        <h1 className="text-sidebar-foreground font-semibold text-4xl md:text-5xl">Boards</h1>
         <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
       </div>
-      <div className="flex gap-4 my-10 flex-wrap">
+      <div className="flex gap-4 my-10 flex-wrap justify-center md:justify-start">
         {boards.map((board: Board) => (
           <div
             key={board._id}
-            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-full sm:w-72 p-3 flex flex-col justify-between"
+            className="group relative bg-sidebar hover:bg-zinc-900 text-sidebar-foreground rounded-md h-44 w-80 sm:w-[17.5rem] p-3 flex flex-col justify-between"
+            onClick={() => handleBoardClick(board._id)}
           >
             <div className="flex justify-end">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <MoreHorizontal className="h-4 w-4" />
+                <DropdownMenuTrigger
+                  asChild
+                  className="hover:bg-neutral-700 rounded-sm w-6 h-5 cursor-pointer"
+                >
+                  <MoreHorizontal />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48" align="start">
-                <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleBoardClick(board._id)}>
                     <Folder className="text-muted-foreground" />
                     <span>Open</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => handleRenameClick(board)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRenameClick(board);
+                    }}
                   >
                     <SquarePen className="text-muted-foreground" />
                     <span>Rename</span>
@@ -153,7 +161,10 @@ const Dashboard = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="bg-red-600 text-white focus:bg-red-800"
-                    onClick={() => handleDeleteClick(board._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(board._id);
+                    }}
                   >
                     <Trash2 />
                     <span>Delete Board</span>
@@ -161,7 +172,7 @@ const Dashboard = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <h2 className="text-3xl">{board.name}</h2>
+            <h2 className="text-2xl md:text-3xl">{board.name}</h2>
           </div>
         ))}
       </div>

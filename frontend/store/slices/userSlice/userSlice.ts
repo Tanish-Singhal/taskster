@@ -5,12 +5,14 @@ interface UserState {
   user: { username: string; email: string; } | null;
   loading: boolean;
   error: string | null;
+  initialized: boolean;
 }
 
 const initialState: UserState = {
   user: null,
   loading: false,
   error: null,
+  initialized: false,
 };
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
@@ -38,6 +40,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.error = null;
+        state.initialized = true;
       })
       .addCase(fetchUser.rejected, (state) => {
         state.loading = false;

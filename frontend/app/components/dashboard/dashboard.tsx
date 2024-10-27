@@ -133,14 +133,14 @@ const Dashboard = () => {
         {boards.map((board: Board) => (
           <div
             key={board._id}
-            className="group relative bg-sidebar hover:bg-zinc-900 text-sidebar-foreground rounded-md h-44 w-80 sm:w-[17.5rem] p-3 flex flex-col justify-between"
+            className="group relative bg-sidebar hover:bg-neutral-200 dark:hover:bg-zinc-900 text-sidebar-foreground rounded-md h-44 w-80 sm:w-[17.5rem] p-3 flex flex-col justify-between"
             onClick={() => handleBoardClick(board._id)}
           >
             <div className="flex justify-end">
               <DropdownMenu>
                 <DropdownMenuTrigger
                   asChild
-                  className="hover:bg-neutral-700 rounded-sm w-6 h-5 cursor-pointer"
+                  className="hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-sm w-6 h-5 cursor-pointer"
                 >
                   <MoreHorizontal />
                 </DropdownMenuTrigger>
@@ -160,7 +160,7 @@ const Dashboard = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="bg-red-600 text-white focus:bg-red-800"
+                    className="bg-red-600 text-white focus:bg-red-700 focus:text-white"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteClick(board._id);

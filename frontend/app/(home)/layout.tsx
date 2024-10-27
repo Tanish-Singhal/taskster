@@ -42,7 +42,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
               </Breadcrumb> */}
             </div>
           </header>
-          <div className="px-6 md:px-10 md:py-3">{children}</div>
+          <div className="px-6 md:px-8">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </StoreProvider>

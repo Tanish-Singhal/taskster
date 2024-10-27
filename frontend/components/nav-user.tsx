@@ -18,15 +18,21 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import profileImage from "@/public/profile.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UserSkeleton } from "@/app/components/sidebar/UserSkeleton";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
-import { fetchUser } from "@/store/slices/userSlice/userSlice";
+import { fetchUser, logoutUser } from "@/store/slices/userSlice/userSlice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { LogoutDialog } from "@/app/components/auth/LogoutDialog";
 
 export function NavUser() {
-  const { isMobile } = useSidebar();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, loading, error, initialized } = useAppSelector((state) => state.user);
+  const { isMobile } = useSidebar();
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     if (!initialized) {
@@ -48,6 +54,40 @@ export function NavUser() {
   };
 
   const initials = getInitials(user.username);
+
+  const handleLogoutClick = () => {
+    setIsLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    try {
+      setIsLoggingOut(true);
+      await dispatch(logoutUser()).unwrap();
+      
+      localStorage.removeItem("taskster-token");
+      
+      toast.success("Logged out successfully!", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      router.push("/signin");
+    } catch (err) {
+      toast.error(`Logout failed: ${err}`, {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+    } finally {
+      setIsLoggingOut(false);
+      setIsLogoutDialogOpen(false);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -100,14 +140,22 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="bg-red-600 text-white focus:bg-red-800"
+              className="bg-red-600 text-white focus:bg-red-700 focus:text-white"
+              onClick={handleLogoutClick}
             >
-              <LogOut />
-              Log out
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+
+      <LogoutDialog
+        isOpen={isLogoutDialogOpen}
+        onClose={() => setIsLogoutDialogOpen(false)}
+        onConfirm={handleLogoutConfirm}
+        isLoading={isLoggingOut}
+      />
     </SidebarMenu>
   );
 }

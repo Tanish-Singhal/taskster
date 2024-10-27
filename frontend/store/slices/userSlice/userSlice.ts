@@ -27,6 +27,16 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   return response.data.user;
 });
 
+export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
+  await axios.get(`${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/auth/logout`, {
+    headers: {
+      Authorization: localStorage.getItem("taskster-token"),
+    },
+  });
+  localStorage.removeItem("taskster-token");
+  return null;
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -47,6 +57,20 @@ const userSlice = createSlice({
         state.user = null;
         state.error = "Failed to fetch user data";
       })
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.initialized = false;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

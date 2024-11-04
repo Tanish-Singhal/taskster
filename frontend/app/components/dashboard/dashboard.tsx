@@ -144,7 +144,9 @@ const Dashboard = () => {
                     <Folder className="text-muted-foreground" />
                     <span>Open</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleRenameClick(board)}>
+                  <DropdownMenuItem
+                    onClick={() => handleRenameClick(board)}
+                  >
                     <SquarePen className="text-muted-foreground" />
                     <span>Rename</span>
                   </DropdownMenuItem>

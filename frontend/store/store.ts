@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import boardReducer from "./slices/boardSlice/boardSlice"
+import userReducer from "./slices/userSlice/userSlice"
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       board: boardReducer,
+      user: userReducer,
     },
   });
 };

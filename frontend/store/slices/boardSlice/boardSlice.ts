@@ -106,7 +106,7 @@ export const renameBoard = createAsyncThunk(
           },
         });
       } else {
-        toast.error("Failed to rename board", {
+        toast.error("Board name already exist", {
           style: {
             borderRadius: "5px",
             background: "#262626",

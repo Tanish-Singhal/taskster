@@ -11,13 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createBoardSchema, CreateBoardSchema } from "@/lib/schema/create-board";
+import { boardNameSchema, BoardNameSchema } from "@/lib/schema/boardNameSchema";
 import { formatBoardName } from "@/lib/utils";
 
 interface RenameBoardDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onRename: (data: CreateBoardSchema) => void;
+  onRename: (data: BoardNameSchema) => void;
   currentName: string;
 }
 
@@ -27,8 +27,8 @@ export const RenameBoardDialog = ({ isOpen, onClose, onRename, currentName }: Re
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CreateBoardSchema>({
-    resolver: zodResolver(createBoardSchema),
+  } = useForm<BoardNameSchema>({
+    resolver: zodResolver(boardNameSchema),
     defaultValues: {
       name: currentName
     }
@@ -40,7 +40,7 @@ export const RenameBoardDialog = ({ isOpen, onClose, onRename, currentName }: Re
     }
   }, [isOpen, currentName, reset]);
 
-  const handleFormSubmit = (data: CreateBoardSchema) => {
+  const handleFormSubmit = (data: BoardNameSchema) => {
     onRename({
       ...data,
       name: formatBoardName(data.name)

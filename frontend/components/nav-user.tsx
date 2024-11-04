@@ -18,42 +18,27 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import profileImage from "@/public/profile.png";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { UserSkeleton } from "@/app/components/sidebar/UserSkeleton";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+import { fetchUser } from "@/store/slices/userSlice/userSlice";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const [user, setUser] = useState<{ username: string; email: string; avatar: string } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { user, loading, error } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/auth/me`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("taskster-token"),
-            },
-          }
-        );
-        setUser(response.data.user);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!user) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, user]);
 
-    fetchUser();
-  }, []);
-
-  if (loading) {
+  if (loading || !user) {
     return <UserSkeleton />;
   }
 
-  if (!user) {
+  if (error) {
     return <div className="text-neutral-500 ml-2">{"Failed to fetch the user data"}</div>;
   }
 

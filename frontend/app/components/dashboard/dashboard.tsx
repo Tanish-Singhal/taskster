@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { CreateBoardDialog } from "./CreateBoardDialog";
 import { BoardSkeleton } from "./BoardSkeleton";
@@ -13,6 +15,11 @@ import {
 import { Folder, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import { deleteBoard, fetchBoards, renameBoard } from "@/store/slices/boardSlice/boardSlice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+
+interface Board {
+  _id: string;
+  name: string;
+}
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -65,7 +72,7 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between">
-          <h1 className="text-neutral-300 font-semibold text-3xl">Boards</h1>
+          <h1 className="text-neutral-300 font-semibold text-3xl lg:text-5xl">Boards</h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="flex gap-4 my-10 flex-wrap">
@@ -83,7 +90,7 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between items-center">
-          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
+          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
             Boards
           </h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
@@ -99,7 +106,7 @@ const Dashboard = () => {
     return (
       <div>
         <div className="flex justify-between items-center">
-          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
+          <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
             Boards
           </h1>
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
@@ -116,16 +123,16 @@ const Dashboard = () => {
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl flex items-center">
+        <h1 className="text-sidebar-foreground font-semibold text-3xl lg:text-5xl">
           Boards
         </h1>
         <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
       </div>
       <div className="flex gap-4 my-10 flex-wrap">
-        {boards.map((board) => (
+        {boards.map((board: Board) => (
           <div
             key={board._id}
-            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-72 p-3 flex flex-col justify-between"
+            className="group relative bg-sidebar text-sidebar-foreground rounded-md h-44 w-full sm:w-72 p-3 flex flex-col justify-between"
           >
             <div className="flex justify-end">
               <DropdownMenu>

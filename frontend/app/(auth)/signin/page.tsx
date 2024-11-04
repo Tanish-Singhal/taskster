@@ -1,6 +1,6 @@
 "use client";
 
-import { LoginForm } from "@/app/components/auth/login-form";
+import { SigninForm } from "@/app/components/auth/signin-form";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -17,7 +17,7 @@ export default function Page() {
 
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
-      <LoginForm />
+      <SigninForm />
     </div>
   );
 }

@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { signinSchema, SigninSchema } from "@/lib/schema/signin-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export function LoginForm() {
+export function SigninForm() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);

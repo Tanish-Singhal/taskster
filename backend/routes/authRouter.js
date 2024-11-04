@@ -161,4 +161,94 @@ router.get("/me", authMiddleware, async (req, res) => {
   }
 })
 
+const updateUserSchema = zod.object({
+  username: zod.string().min(3).max(20).optional(),
+  email: zod.string().email().min(6).max(30).optional(),
+  currentPassword: zod.string().min(8).max(100).optional(),
+  newPassword: zod.string().min(8).max(100).optional(),
+}).refine((data) => {
+  if (data.currentPassword || data.newPassword) {
+    return data.currentPassword && data.newPassword;
+  }
+  return true;
+}, {
+  message: "Both current password and new password are required for password update"
+});
+
+router.put("/update", authMiddleware, async (req, res) => {
+  const body = req.body;
+  const result = updateUserSchema.safeParse(body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid data",
+      errors: result.error.errors,
+    });
+  }
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (body.username && body.username !== user.username) {
+      const existingUser = await User.findOne({ username: body.username });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Username already taken",
+        });
+      }
+    }
+
+    if (body.email && body.email !== user.email) {
+      const existingUser = await User.findOne({ email: body.email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Email already in use",
+        });
+      }
+    }
+
+    if (body.currentPassword && body.newPassword) {
+      const validPassword = await bcrypt.compare(body.currentPassword, user.password);
+      if (!validPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Current password is incorrect",
+        });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(body.newPassword, salt);
+      user.password = hashedPassword;
+    }
+
+    if (body.username) user.username = body.username;
+    if (body.email) user.email = body.email;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error updating profile",
+      error: "Internal Server Error",
+    });
+  }
+});
+
 module.exports = router;

@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
-import { createBoardSchema, CreateBoardSchema } from "@/lib/schema/create-board";
+import { boardNameSchema, BoardNameSchema } from "@/lib/schema/boardNameSchema";
 import axios from "axios";
 import { formatBoardName } from "@/lib/utils";
 
@@ -29,11 +29,11 @@ export const CreateBoardDialog = ({ onBoardCreated }: CreateBoardDialogProps) =>
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<CreateBoardSchema>({
-    resolver: zodResolver(createBoardSchema),
+  } = useForm<BoardNameSchema>({
+    resolver: zodResolver(boardNameSchema),
   });
 
-  const handleCreateBoard = async (data: CreateBoardSchema) => {
+  const handleCreateBoard = async (data: BoardNameSchema) => {
     try {
       const formattedData = {
         ...data,

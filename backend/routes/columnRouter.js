@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 const columnSchema = zod.object({
-  name: zod.string().min(3).max(30),
+  name: zod.string().min(3).max(20),
 });
 
 router.post("/:boardId", async (req, res) => {

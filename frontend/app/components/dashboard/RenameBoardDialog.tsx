@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { boardNameSchema, BoardNameSchema } from "@/lib/schema/boardNameSchema";
-import { formatBoardName } from "@/lib/utils";
+import { formatNames } from "@/lib/utils";
 
 interface RenameBoardDialogProps {
   isOpen: boolean;
@@ -43,7 +43,7 @@ export const RenameBoardDialog = ({ isOpen, onClose, onRename, currentName }: Re
   const handleFormSubmit = (data: BoardNameSchema) => {
     onRename({
       ...data,
-      name: formatBoardName(data.name)
+      name: formatNames(data.name)
     });
   };
 

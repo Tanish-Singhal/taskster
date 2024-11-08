@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Folder, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+import { Folder, MoreHorizontal, SquarePen, Trash2, TriangleAlert } from "lucide-react";
 import { deleteBoard, fetchBoards, renameBoard } from "@/store/slices/boardSlice/boardSlice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { useRouter } from "next/navigation";
@@ -97,7 +97,10 @@ const Dashboard = () => {
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-12 flex justify-center items-center">
-          <h2 className="text-4xl lg:text-5xl text-neutral-500 mx-6 lg:mx-0">{error}</h2>
+          <h2 className="text-2xl lg:text-4xl h-screen flex justify-center items-center pb-80 text-neutral-500 mx-6 lg:mx-0 flex-col gap-4">
+            <TriangleAlert size={50} />
+            <h1>Something Went Wrong</h1>
+          </h2>
         </div>
       </div>
     );
@@ -111,7 +114,7 @@ const Dashboard = () => {
           <CreateBoardDialog onBoardCreated={() => dispatch(fetchBoards())} />
         </div>
         <div className="my-14">
-          <h2 className="text-4xl lg:text-5xl flex justify-center text-neutral-500">
+          <h2 className="text-3xl lg:text-4xl h-screen flex justify-center items-center pb-80 text-neutral-500">
             Create your first board
           </h2>
         </div>

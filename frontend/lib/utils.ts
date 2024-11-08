@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatBoardName = (name: string): string => {
+export const formatNames = (name: string): string => {
   const trimmedName = name.replace(/\s+/g, ' ').trim();
   return trimmedName.charAt(0).toUpperCase() + trimmedName.slice(1);
 };

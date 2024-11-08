@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { boardNameSchema, BoardNameSchema } from "@/lib/schema/boardNameSchema";
 import axios from "axios";
-import { formatBoardName } from "@/lib/utils";
+import { formatNames } from "@/lib/utils";
 
 interface CreateBoardDialogProps {
   onBoardCreated: () => void;
@@ -37,7 +37,7 @@ export const CreateBoardDialog = ({ onBoardCreated }: CreateBoardDialogProps) =>
     try {
       const formattedData = {
         ...data,
-        name: formatBoardName(data.name)
+        name: formatNames(data.name)
       };
 
       await axios.post(`${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards`, formattedData, {

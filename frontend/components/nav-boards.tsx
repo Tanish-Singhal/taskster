@@ -48,6 +48,7 @@ export function NavBoards() {
     if (boardToDelete) {
       dispatch(deleteBoard(boardToDelete));
       setBoardToDelete(null);
+      router.push("/dashboard");
     }
     setIsDeleteDialogOpen(false);
   };

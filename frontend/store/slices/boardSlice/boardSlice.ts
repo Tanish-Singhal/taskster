@@ -9,6 +9,7 @@ interface Board {
 
 interface BoardState {
   boards: Board[];
+  currentBoard: Board;
   loading: boolean;
   error: string | null;
   initialized: boolean;
@@ -16,6 +17,7 @@ interface BoardState {
 
 const initialState: BoardState = {
   boards: [],
+  currentBoard: { _id: "", name: "" },
   loading: false,
   error: null,
   initialized: false,
@@ -121,6 +123,23 @@ export const renameBoard = createAsyncThunk(
   }
 );
 
+export const fetchBoardById = createAsyncThunk("boards/fetchBoardById", async (boardId: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/boards/${boardId}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("taskster-token"),
+        },
+        
+      }
+    );
+    return response.data.data;
+  } catch (err) {
+    throw new Error("Failed to fetch board name");
+  }
+});
+
 const boardSlice = createSlice({
   name: "boards",
   initialState,
@@ -156,6 +175,18 @@ const boardSlice = createSlice({
       if (index !== -1) {
         state.boards[index].name = action.payload.name;
       }
+    });
+    builder.addCase(fetchBoardById.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchBoardById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.currentBoard = action.payload;
+    });
+    builder.addCase(fetchBoardById.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "An error occurred";
     });
   },
 });

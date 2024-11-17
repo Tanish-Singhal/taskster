@@ -23,12 +23,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface ColumnProps {
+  // id: string;
   title: string;
+  // tasks: string[];
 }
 
 const Column = ({ title }: ColumnProps) => {
   return (
-    <div className="border w-72 md:w-80 h-[calc(100vh-17rem)] bg-sidebar text-sidebar-foreground rounded-lg flex flex-col">
+    <div className="border w-72 md:w-80 h-[calc(100vh-17rem)] bg-sidebar/60 text-sidebar-foreground rounded-lg flex flex-col">
       <div className="p-3 md:p-4 flex justify-between items-center">
         <span className="font-semibold text-lg">{title}</span>
         <div className="flex space-x-3 items-center">
@@ -37,7 +39,7 @@ const Column = ({ title }: ColumnProps) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DialogTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-sidebar-accent">
+                    <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-muted-foreground/30">
                       <Plus className="h-6 w-6" />
                     </Button>
                   </DialogTrigger>
@@ -62,7 +64,7 @@ const Column = ({ title }: ColumnProps) => {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-sidebar-accent">
+                <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-muted-foreground/30">
                   <MoreHorizontal className="h-6 w-6" />
                 </Button>
               </DropdownMenuTrigger>
@@ -77,7 +79,7 @@ const Column = ({ title }: ColumnProps) => {
           </TooltipProvider>
         </div>
       </div>
-      <hr className="border-muted" />
+      <hr />
       <ScrollArea className="px-4 py-3">
         <div className="space-y-3">
           <Task key="task-1" />

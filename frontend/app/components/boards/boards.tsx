@@ -110,8 +110,9 @@ const Boards = () => {
 
       <ScrollArea className="w-full">
         <div className="flex gap-3 md:gap-4 pb-4">
-          <Column title="Backlog" />
-          <Column title="In Progress" />
+          {columns.map((column) => (
+            <Column title={column.name} key={column._id} />
+          ))}
         </div>
         <ScrollBar orientation="horizontal" className="bg-muted/50" />
       </ScrollArea>

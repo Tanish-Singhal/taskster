@@ -1,6 +1,7 @@
 const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const Column = require("./../models/columnSchema");
+const Task = require("./../models/taskSchema"); // Add this import
 const zod = require("zod");
 
 const router = express.Router();
@@ -108,13 +109,9 @@ router.put("/:boardId/:columnId", async (req, res) => {
   }
 });
 
-router.delete("/:boardId/:columnId", async (req, res) => {
+router.delete("/:columnId", async (req, res) => {
   try {
-    await Task.deleteMany({
-      columnId: req.params.columnId,
-    });
-
-    const deletedColumn = await Column.findByIdAndDelete(req.params.columnId);
+    const deletedColumn = await Column.findById(req.params.columnId);
 
     if (!deletedColumn) {
       return res.status(404).json({
@@ -122,6 +119,12 @@ router.delete("/:boardId/:columnId", async (req, res) => {
         message: "Column not found",
       });
     }
+
+    await Task.deleteMany({
+      columnId: req.params.columnId,
+    });
+
+    await deletedColumn.deleteOne();
 
     res.status(200).json({
       success: true,

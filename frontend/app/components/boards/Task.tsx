@@ -8,7 +8,7 @@ import React from "react";
 
 const Task = () => {
   return (
-    <Card className="group relative overflow-hidden transition-all bg-secondary hover:border-ring/50">
+    <Card className="group relative overflow-hidden transition-all hover:border-ring/50 dark:bg-secondary/70">
 
       <CardHeader className="p-3 pb-2 space-y-3">
         <div className="flex items-start justify-between">
@@ -44,7 +44,7 @@ const Task = () => {
         </div>
       </CardContent>
 
-      <hr className="border-neutral-700" />
+      <hr />
 
       <CardFooter className="p-2">
         <div className="flex w-full items-center justify-between">

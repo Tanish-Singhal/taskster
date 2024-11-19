@@ -21,19 +21,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAppDispatch } from "@/store/redux-hooks";
 import DeleteColumnDialog from "./DeleteColumnDialog";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
-import { deleteColumn } from "@/store/slices/columnSlice/columnSlice";
+import RenameColumnDialog from "./RenameColumnDialog";
 
 interface ColumnProps {
   id: string;
@@ -42,13 +31,8 @@ interface ColumnProps {
 }
 
 const Column = ({ id, title }: ColumnProps) => {
-  const dispatch = useAppDispatch();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-  const handleDeleteColumn = async () => {
-    await dispatch(deleteColumn(id));
-    setIsDeleteDialogOpen(false);
-  };
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
 
   return (
     <div>
@@ -99,7 +83,9 @@ const Column = ({ id, title }: ColumnProps) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Rename Column</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+                    Rename Column
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Clear all Tasks</DropdownMenuItem>
                   <DropdownMenuItem
                     className="bg-red-600 text-white focus:bg-red-700 focus:text-white"
@@ -128,6 +114,13 @@ const Column = ({ id, title }: ColumnProps) => {
         isOpen={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         columnId={id}
+      />
+      
+      <RenameColumnDialog
+        isOpen={isRenameDialogOpen}
+        onOpenChange={setIsRenameDialogOpen}
+        columnId={id}
+        currentName={title}
       />
     </div>
   );

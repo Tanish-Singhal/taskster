@@ -102,14 +102,11 @@ const columnSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchColumn.fulfilled, (state, action) => {
-        state.columns = action.payload;
+        state.columns = action.payload || [];
         state.error = null;
       })
       .addCase(fetchColumn.rejected, (state, action) => {
         state.error = action.error.message || "An error occurred";
-      })
-      .addCase(deleteColumn.pending, (state) => {
-        state.error = null;
         state.loading = true;
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {

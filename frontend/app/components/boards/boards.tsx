@@ -8,7 +8,7 @@ import { Search, TriangleAlert } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import ColumnSkeleton from "./ColumnSkeleton";
-import CreateColumnButton from "./CreateColumnButton";
+import CreateColumnDialog from "./CreateColumnButton";
 import Column from "./Column";
 import { fetchColumn } from "@/store/slices/columnSlice/columnSlice";
 
@@ -77,7 +77,7 @@ const Boards = () => {
             {currentBoard?.name}
           </h1>
 
-          <CreateColumnButton />
+          <CreateColumnDialog />
         </div>
 
         <div className="space-y-4">
@@ -108,18 +108,24 @@ const Boards = () => {
         </div>
       </div>
 
-      <ScrollArea className="w-full">
-        <div className="flex gap-3 md:gap-4 pb-4">
-          {columns.map((column) => (
-            <Column
-             title={column.name}
-             key={column._id}
-             id={column._id} 
-            />
-          ))}
+      {columns.length === 0 ? (
+        <div className="h-[50vh] w-full flex justify-center items-center flex-col gap-4">
+          <h2 className="text-3xl lg:text-4xl text-muted-foreground">Create your first column to get started</h2>
         </div>
-        <ScrollBar orientation="horizontal" className="bg-muted/50" />
-      </ScrollArea>
+      ) : (
+        <ScrollArea className="w-full">
+          <div className="flex gap-3 md:gap-4 pb-4">
+            {columns.map((column) => (
+              <Column
+               title={column.name}
+               key={column._id}
+               id={column._id} 
+              />
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" className="bg-muted/50" />
+        </ScrollArea>
+      )}
     </div>
   );
 };

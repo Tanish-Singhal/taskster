@@ -1,7 +1,7 @@
 const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const Column = require("./../models/columnSchema");
-const Task = require("./../models/taskSchema"); // Add this import
+const Task = require("./../models/taskSchema");
 const zod = require("zod");
 
 const router = express.Router();
@@ -73,38 +73,56 @@ router.get("/:boardId", async (req, res) => {
   }
 });
 
-router.put("/:boardId/:columnId", async (req, res) => {
+router.put("/:columnId", async (req, res) => {
   const body = req.body;
   const result = columnSchema.safeParse(body);
 
   if (!result.success) {
     return res.status(400).json({
-      success: false,
-      message: "Invalid data",
+      success: false, 
+      message: "Invalid data"
     });
   }
 
   try {
-    const updateColumn = await Column.findByIdAndUpdate(req.params.columnId, body, {
-      new: true,
-    });
-
-    if (!updateColumn) {
+    // Get the column first to get its boardId
+    const column = await Column.findById(req.params.columnId);
+    if (!column) {
       return res.status(404).json({
         success: false,
-        message: "Column not found",
+        message: "Column not found"
       });
     }
 
+    const existingColumn = await Column.findOne({
+      name: body.name,
+      boardId: column.boardId,
+      _id: { $ne: req.params.columnId }
+    });
+
+    if (existingColumn) {
+      return res.status(400).json({
+        success: false,
+        message: "Column name already exists"
+      });
+    }
+
+    const updateColumn = await Column.findByIdAndUpdate(
+      req.params.columnId, 
+      body,
+      { new: true }
+    );
+
     res.status(200).json({
       success: true,
-      message: "Column updated successfully",
-      column: updateColumn,
+      message: "Column renamed successfully",
+      column: updateColumn
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Error while updating column",
+      message: "Error while updating column"
     });
   }
 });

@@ -21,7 +21,7 @@ import { useParams } from "next/navigation";
 import { useAppDispatch } from "@/store/redux-hooks";
 import { fetchColumn } from "@/store/slices/columnSlice/columnSlice";
 
-const CreateColumnDialog = () => {
+const CreateColumnButton = () => {
   const [open, setOpen] = useState(false);
   const params = useParams();
   const boardId = params.boardId;
@@ -117,4 +117,4 @@ const CreateColumnDialog = () => {
   );
 };
 
-export default CreateColumnDialog;
+export default CreateColumnButton;

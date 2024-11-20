@@ -8,7 +8,7 @@ import { Search, TriangleAlert } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import ColumnSkeleton from "./ColumnSkeleton";
-import CreateColumnDialog from "./CreateColumnButton";
+import CreateColumnButton from "./CreateColumnButton";
 import Column from "./Column";
 import { fetchColumn } from "@/store/slices/columnSlice/columnSlice";
 
@@ -77,7 +77,7 @@ const Boards = () => {
             {currentBoard?.name}
           </h1>
 
-          <CreateColumnDialog />
+          <CreateColumnButton />
         </div>
 
         <div className="space-y-4">

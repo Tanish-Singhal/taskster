@@ -13,11 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formatNames } from "@/lib/utils";
 import { columnNameSchema, ColumnNameSchema } from "@/lib/schema/columnNameSchema";
-import axios from "axios";
 import { useAppDispatch } from "@/store/redux-hooks";
-import { fetchColumn } from "@/store/slices/columnSlice/columnSlice";
-import { useParams } from "next/navigation";
-import toast from "react-hot-toast";
+import { renameColumn } from "@/store/slices/columnSlice/columnSlice";
 
 interface RenameColumnDialogProps {
   isOpen: boolean;
@@ -28,8 +25,6 @@ interface RenameColumnDialogProps {
 
 const RenameColumnDialog = ({ isOpen, onOpenChange, columnId, currentName }: RenameColumnDialogProps) => {
   const dispatch = useAppDispatch();
-  const params = useParams();
-  const boardId = params.boardId;
 
   const {
     register,
@@ -46,41 +41,14 @@ const RenameColumnDialog = ({ isOpen, onOpenChange, columnId, currentName }: Ren
   const handleRenameColumn = async (data: ColumnNameSchema) => {
     try {
       const formattedData = {
-        ...data,
         name: formatNames(data.name),
       };
 
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/columns/${columnId}`,
-        formattedData,
-        {
-          headers: {
-            Authorization: localStorage.getItem("taskster-token"),
-          },
-        }
-      );
-
-      dispatch(fetchColumn(boardId as string));
+      await dispatch(renameColumn({ columnId, name: formattedData.name })).unwrap();
       onOpenChange(false);
       reset();
-
-      toast.success("Column renamed successfully!", {
-        style: {
-          borderRadius: "5px",
-          background: "#262626",
-          color: "#ffffff",
-        },
-      });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message || "Failed to rename column", {
-          style: {
-            borderRadius: "5px",
-            background: "#262626",
-            color: "#ffffff",
-          },
-        });
-      }
+    } catch {
+      // Error handling is done in the slice
     }
   };
 

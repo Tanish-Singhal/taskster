@@ -95,6 +95,52 @@ export const deleteColumn = createAsyncThunk(
   }
 );
 
+export const renameColumn = createAsyncThunk(
+  "column/renameColumn",
+  async ({ columnId, name }: { columnId: string; name: string }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/columns/${columnId}`,
+        { name },
+        {
+          headers: {
+            Authorization: localStorage.getItem("taskster-token"),
+          },
+        }
+      );
+
+      toast.success("Column renamed successfully!", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      return { columnId, name };
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      } else {
+        toast.error("Failed to rename column", {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      }
+      throw err;
+    }
+  }
+);
+
 const columnSlice = createSlice({
   name: "column",
   initialState,
@@ -115,6 +161,18 @@ const columnSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteColumn.rejected, (state, action) => {
+        state.error = action.error.message || "An error occurred";
+        state.loading = false;
+      })
+      .addCase(renameColumn.fulfilled, (state, action) => {
+        const column = state.columns.find(col => col._id === action.payload.columnId);
+        if (column) {
+          column.name = action.payload.name;
+        }
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(renameColumn.rejected, (state, action) => {
         state.error = action.error.message || "An error occurred";
         state.loading = false;
       });

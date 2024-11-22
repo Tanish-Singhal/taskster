@@ -7,40 +7,41 @@ const router = express.Router();
 router.use(authMiddleware);
 
 const taskSchema = zod.object({
-  title: zod.string().min(3).max(30),
+  title: zod.string().min(10).max(100),
   description: zod.string().optional(),
-  priority: zod.enum(["low", "medium", "high"]).optional(),
-  status: zod.string(),
-  tags: zod.array(zod.string()).optional(),
-  deadline: zod.date().optional(),
+  priority: zod.enum(["low", "medium", "high"]).default("low"),
+  tags: zod.array(zod.string()).default([]),
+  deadline: zod.string().nullable().optional(),
 });
 
 router.post("/:columnId", async (req, res) => {
-  const body = req.body;
-  const result = taskSchema.safeParse(body);
-
-  if (!result.success) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid data",
-    });
-  }
-
   try {
+    const body = req.body;
+    
+    const result = taskSchema.safeParse(body);
+    
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Task validation failed",
+      });
+    }
+
     const newTask = await Task.create({
       ...result.data,
-      boardId: req.params.boardId,
+      columnId: req.params.columnId,
     });
 
-    res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "Task created successfully",
       task: newTask,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Server error:", error);
+    return res.status(500).json({
       success: false,
-      message: "Error while creating task",
+      message: error.message || "Error while creating task",
     });
   }
 });
@@ -63,7 +64,7 @@ router.get("/:columnId", async (req, res) => {
   }
 });
 
-router.put("/:columnId/:taskId", async (req, res) => {
+router.put("/:taskId", async (req, res) => {
   const body = req.body;
   const result = taskSchema.safeParse(body);
 
@@ -81,7 +82,7 @@ router.put("/:columnId/:taskId", async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Task updated successfully",
+      message: "Task updated successfully", 
       task: updateTask,
     });
   } catch (error) {
@@ -92,7 +93,7 @@ router.put("/:columnId/:taskId", async (req, res) => {
   }
 });
 
-router.delete("/:columnId/:taskId", async (req, res) => {
+router.delete("/:taskId", async (req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.taskId);
 

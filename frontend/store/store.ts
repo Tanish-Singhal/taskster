@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import boardReducer from "./slices/boardSlice/boardSlice"
 import userReducer from "./slices/userSlice/userSlice"
 import columnReducer from "./slices/columnSlice/columnSlice"
+import taskReducer from "./slices/taskSlice/taskSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       board: boardReducer,
       user: userReducer,
       column: columnReducer,
+      task: taskReducer,
     },
   });
 };

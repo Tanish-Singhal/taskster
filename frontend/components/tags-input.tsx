@@ -27,7 +27,7 @@ interface TagsInputProps extends React.HTMLAttributes<HTMLDivElement> {
 
 interface TagsInputContextProps {
   value: string[];
-  onValueChange: (value: any) => void;
+  onValueChange: (value: string[]) => void;
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   activeIndex: number;
@@ -38,7 +38,7 @@ const TagInputContext = React.createContext<TagsInputContextProps | null>(null);
 
 export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
   (
-    { children, value, onValueChange, placeholder, maxItems, minItems, className, dir, ...props },
+    { value, onValueChange, placeholder, maxItems, minItems, className, dir, ...props },
     ref
   ) => {
     const [activeIndex, setActiveIndex] = React.useState(-1);
@@ -57,7 +57,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
           onValueChange([...value, val]);
         }
       },
-      [value]
+      [value, onValueChange, parseMaxItems]
     );
 
     const RemoveValue = React.useCallback(
@@ -66,7 +66,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
           onValueChange(value.filter((item) => item !== val));
         }
       },
-      [value]
+      [value, onValueChange, parseMinItems]
     );
 
     const handlePaste = React.useCallback(
@@ -87,7 +87,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
         onValueChange(newValue);
         setInputValue("");
       },
-      [value]
+      [value, onValueChange, parseMaxItems]
     );
 
     const handleSelect = React.useCallback(
@@ -120,7 +120,7 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
         }
       };
       VerifyDisable();
-    }, [value]);
+    }, [value, parseMaxItems, parseMinItems]);
 
     // ? check: Under build , default option support
     // * support : for the uncontrolled && controlled ui
@@ -208,7 +208,16 @@ export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
             break;
         }
       },
-      [activeIndex, value, inputValue, RemoveValue]
+      [
+        activeIndex,
+        value,
+        inputValue,
+        RemoveValue,
+        dir,
+        isValueSelected,
+        onValueChangeHandler,
+        selectedValue
+      ]
     );
 
     const mousePreventDefault = React.useCallback((e: React.MouseEvent) => {

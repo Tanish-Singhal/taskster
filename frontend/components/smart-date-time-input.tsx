@@ -8,9 +8,8 @@ import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Calendar as CalendarIcon, LucideTextCursorInput } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -68,10 +67,6 @@ export const formatDateTime = (datetime: Date | string) => {
 const inputBase =
   "bg-transparent focus:outline-none focus:ring-0 focus-within:outline-none focus-within:ring-0 sm:text-sm disabled:cursor-not-allowed disabled:opacity-50";
 
-// @source: https://www.perplexity.ai/search/in-javascript-how-RfI7fMtITxKr5c.V9Lv5KA#1
-// use this pattern to validate the transformed date string for the natural language input
-const naturalInputValidationPattern = "^[A-Z][a-z]{2}sd{1,2},sd{4},sd{1,2}:d{2}s[AP]M$";
-
 const DEFAULT_SIZE = 96;
 
 /**
@@ -106,11 +101,6 @@ export const SmartDatetimeInput = React.forwardRef<
   > &
     SmartDatetimeInputProps
 >(({ className, value, onValueChange, placeholder, disabled }, ref) => {
-  // ? refactor to be only used with controlled input
-  /*  const [dateTime, setDateTime] = React.useState<Date | undefined>(
-    value ?? undefined
-  ); */
-
   const [Time, setTime] = React.useState<string>("");
 
   const onTimeChange = React.useCallback((time: string) => {
@@ -155,11 +145,9 @@ const TimePicker = () => {
 
       newVal.setHours(hour, partStamp === 0 ? parseInt("00") : timestamp * partStamp);
 
-      // ? refactor needed check if we want to use the new date
-
       onValueChange(newVal);
     },
-    [value]
+    [value, onValueChange, onTimeChange]
   );
 
   const handleKeydown = React.useCallback(
@@ -196,8 +184,6 @@ const TimePicker = () => {
         currentElm.focus();
 
         const timeValue = currentElm.textContent ?? "";
-
-        // this should work now haha that hour is what does the trick
 
         const PM_AM = timeValue.split(" ")[1];
         const PM_AM_hour = parseInt(timeValue.split(" ")[0].split(":")[0]);
@@ -319,7 +305,6 @@ const TimePicker = () => {
 
               const trueIndex = i * 4 + part;
 
-              // ? refactor : add the select of the default time on the current device (H:MM)
               const isSelected =
                 (currentTime.hours === i || currentTime.hours === formatIndex) &&
                 Time.split(" ")[1] === PM_AM &&
@@ -377,18 +362,14 @@ const NaturalLanguageInput = React.forwardRef<
     }`;
     setInputValue(value ? formatDateTime(value) : "");
     onTimeChange(value ? Time : timeVal);
-  }, [value, Time]);
+  }, [value, Time, onTimeChange]);
 
   const handleParse = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      // parse the date string when the input field loses focus
       const parsedDateTime = parseDateTime(e.currentTarget.value);
       if (parsedDateTime) {
         const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
-        //fix the time format for this value
-
         const PM_AM_hour = parsedDateTime.getHours();
-
         const hour =
           PM_AM_hour > 12
             ? PM_AM_hour % 12
@@ -401,7 +382,7 @@ const NaturalLanguageInput = React.forwardRef<
         onTimeChange(`${hour}:${parsedDateTime.getMinutes()} ${PM_AM}`);
       }
     },
-    [value]
+    [onValueChange, onTimeChange]
   );
 
   const handleKeydown = React.useCallback(
@@ -411,10 +392,7 @@ const NaturalLanguageInput = React.forwardRef<
           const parsedDateTime = parseDateTime(e.currentTarget.value);
           if (parsedDateTime) {
             const PM_AM = parsedDateTime.getHours() >= 12 ? "PM" : "AM";
-            //fix the time format for this value
-
             const PM_AM_hour = parsedDateTime.getHours();
-
             const hour =
               PM_AM_hour > 12
                 ? PM_AM_hour % 12
@@ -429,7 +407,7 @@ const NaturalLanguageInput = React.forwardRef<
           break;
       }
     },
-    [value]
+    [onValueChange, onTimeChange]
   );
 
   return (
@@ -455,7 +433,7 @@ const DateTimeLocalInput = ({ className, ...props }: DateTimeLocalInputProps) =>
   const { value, onValueChange, Time } = useSmartDateInput();
 
   const formateSelectedDate = React.useCallback(
-    (date: Date | undefined, selectedDate: Date, m: ActiveModifiers, e: React.MouseEvent) => {
+    (date: Date | undefined, selectedDate: Date) => {
       const parsedDateTime = parseDateTime(selectedDate);
 
       if (parsedDateTime) {
@@ -463,7 +441,7 @@ const DateTimeLocalInput = ({ className, ...props }: DateTimeLocalInputProps) =>
         onValueChange(parsedDateTime);
       }
     },
-    [value, Time]
+    [Time, onValueChange]
   );
 
   return (

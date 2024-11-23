@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { ModeToggle } from "@/app/components/ModeToggle"
+import { ModeToggle } from "@/app/components/sidebar/ModeToggle"
 
 export function NavSecondary({
   items,

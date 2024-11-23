@@ -91,7 +91,7 @@ const CreateColumnButton = () => {
       <DialogTrigger asChild>
         <Button size="sm">Create Column</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-11/12 sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Column</DialogTitle>
           <DialogDescription>Write the name of the column you want to create.</DialogDescription>

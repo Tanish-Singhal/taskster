@@ -28,7 +28,7 @@ const DeleteColumnDialog = ({ isOpen, onOpenChange, columnId }: DeleteColumnDial
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent className="w-11/12 sm:max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>

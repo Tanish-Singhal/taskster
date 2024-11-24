@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
+import { fetchTasks } from "@/store/slices/taskSlice/taskSlice";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,16 +16,34 @@ import {
 import DeleteColumnDialog from "./DeleteColumnDialog";
 import RenameColumnDialog from "./RenameColumnDialog";
 import AddTaskDialog from "./AddTaskDialog";
+import TaskComponent from "./Task";
+
+interface Task {
+  _id: string;
+  title: string;
+  description?: string;
+  priority: "low" | "medium" | "high";
+  tags: string[];
+  deadline?: string;
+  columnId: string;
+}
 
 interface ColumnProps {
   id: string;
   title: string;
-  // tasks: string[];
 }
 
 const Column = ({ id, title }: ColumnProps) => {
+  const dispatch = useAppDispatch();
+  const { tasks } = useAppSelector((state) => state.task);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchTasks(id));
+  }, [dispatch, id]);
+
+  const columnTasks = tasks.filter((task: Task) => task.columnId === id);
 
   return (
     <div>
@@ -62,6 +82,13 @@ const Column = ({ id, title }: ColumnProps) => {
         <hr />
         <ScrollArea className="px-4 py-3">
           <div className="space-y-3">
+            {columnTasks.length === 0 ? (
+              <p className="text-center text-muted-foreground py-4">No tasks yet</p>
+            ) : (
+              columnTasks.map((task: Task) => (
+                <TaskComponent key={task._id} task={task} />
+              ))
+            )}
           </div>
         </ScrollArea>
       </div>

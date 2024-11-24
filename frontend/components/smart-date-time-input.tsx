@@ -3,13 +3,13 @@
 import React from "react";
 import { parseDate } from "chrono-node";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ActiveModifiers } from "react-day-picker";
 import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { format } from "date-fns";
 
 /* -------------------------------------------------------------------------- */
 /*                               Inspired By:                                 */
@@ -54,14 +54,8 @@ export const getDateTimeLocal = (timestamp?: Date): string => {
  * @returns A string representation of the date and time
  */
 export const formatDateTime = (datetime: Date | string) => {
-  return new Date(datetime).toLocaleTimeString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
+  // Replace the existing formatDateTime function with date-fns
+  return format(new Date(datetime), "MMM d, yyyy h:mm a");
 };
 
 const inputBase =
@@ -253,8 +247,6 @@ const TimePicker = () => {
 
       const formatIndex = PM_AM === "AM" ? hours : hours === 12 ? hours : hours + 12;
       const formattedHours = formatIndex;
-
-      console.log(formatIndex);
 
       for (let j = 0; j <= 3; j++) {
         const diff = Math.abs(j * timestamp - minutes);

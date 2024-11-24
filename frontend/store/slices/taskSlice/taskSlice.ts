@@ -39,10 +39,6 @@ export const createTask = createAsyncThunk(
         }
       );
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
-      }
-
       toast.success("Task created successfully", {
         style: {
           borderRadius: "5px",
@@ -52,10 +48,17 @@ export const createTask = createAsyncThunk(
       });
 
       return response.data.task;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || "Failed to create task";
-        toast.error(message, {
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      } else {
+        toast.error("Failed to create task", {
           style: {
             borderRadius: "5px",
             background: "#262626",
@@ -63,6 +66,43 @@ export const createTask = createAsyncThunk(
           },
         });
       }
+      throw err;
+    }
+  }
+);
+
+export const fetchTasks = createAsyncThunk(
+  "task/fetchTasks",
+  async (columnId: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/tasks/${columnId}`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("taskster-token")}`,
+          },
+        }
+      );
+      return response.data.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      } else {
+        toast.error("Failed to fetch tasks", {
+          style: {
+            borderRadius: "5px",
+            background: "#262626",
+            color: "#ffffff",
+          },
+        });
+      }
+      throw err;
     }
   }
 );
@@ -81,7 +121,15 @@ const taskSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to create task";
       })
+      .addCase(fetchTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = action.payload;
+      })
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch tasks";
+      });
   }
 });
 
-export const { reducer: taskReducer } = taskSlice;
+export default taskSlice.reducer;

@@ -83,7 +83,7 @@ export const CreateBoardDialog = ({ onBoardCreated }: CreateBoardDialogProps) =>
       <DialogTrigger asChild>
         <Button variant="default">Create Board</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="w-11/12 sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create Board</DialogTitle>
         </DialogHeader>

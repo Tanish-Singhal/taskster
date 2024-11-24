@@ -23,7 +23,7 @@ export const DeleteBoardDialog: React.FC<DeleteBoardDialogProps> = ({
 }) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent>
+      <AlertDialogContent className="w-11/12 sm:max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to delete this board?</AlertDialogTitle>
           <AlertDialogDescription>

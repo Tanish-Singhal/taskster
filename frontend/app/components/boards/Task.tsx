@@ -26,9 +26,9 @@ const Task = ({ task }: TaskProps) => {
 
   return (
     <Card className="group relative overflow-hidden transition-all hover:border-ring/50 dark:bg-secondary/70">
-      {task.priority === 'high' && (
-        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500" />
-      )}
+      <div className="absolute top-2 right-2 w-2 h-2 rounded-xl">
+        {task.priority === 'high' && <div className="w-full h-full bg-red-500" />}
+      </div>
 
       <CardHeader className="p-3 pb-2 space-y-3">
         <div className="flex items-start justify-between">

@@ -55,6 +55,14 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
     control: form.control,
   });
 
+  const handleDateChange = (date: Date | undefined) => {
+    if (date) {
+      field.onChange(date.toISOString());
+    } else {
+      field.onChange('');
+    }
+  };
+
   const { field: tagsField } = useController({
     name: "tags",
     control: form.control,
@@ -146,7 +154,7 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
               <Label htmlFor="deadline">Deadline</Label>
               <SmartDatetimeInput
                 value={field.value ? new Date(field.value) : undefined}
-                onValueChange={(date) => field.onChange(date?.toISOString() || '')}
+                onValueChange={handleDateChange}
                 placeholder="e.g. Tomorrow morning 9am"
               />
               {form.formState.errors.deadline && (

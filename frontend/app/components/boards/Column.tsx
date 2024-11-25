@@ -83,7 +83,7 @@ const Column = ({ id, title }: ColumnProps) => {
         <ScrollArea className="px-4 py-3">
           <div className="space-y-3">
             {columnTasks.length === 0 ? (
-              <p className="text-center text-muted-foreground py-4">No tasks yet</p>
+              <p className="text-center text-muted-foreground py-4 text-xl font-semibold">No tasks yet</p>
             ) : (
               columnTasks.map((task: Task) => (
                 <TaskComponent key={task._id} task={task} />

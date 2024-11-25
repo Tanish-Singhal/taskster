@@ -5,7 +5,7 @@ const taskSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "Please provide a task title"],
-      minLength: [10, "Task title must be at least 10 characters long"],
+      minLength: [5, "Task title must be at least 5 characters long"],
       maxLength: [100, "Task title must be at most 100 characters long"],
       trim: true,
     },
@@ -24,7 +24,7 @@ const taskSchema = new mongoose.Schema(
     },
     deadline: {
       type: String,
-      default: null,
+      required: [true, "Please provide a task deadline"],
     },
     columnId: {
       type: mongoose.Schema.Types.ObjectId,

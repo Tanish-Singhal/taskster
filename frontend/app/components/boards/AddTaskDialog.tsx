@@ -60,14 +60,21 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
     control: form.control,
   });
 
+  const { field: priorityField } = useController({
+    name: "priority",
+    control: form.control,
+  });
+
   const onSubmit = async (data: TaskSchema) => {
     try {
-      await dispatch(createTask({ data, columnId }));
+      await dispatch(createTask({ data, columnId })).unwrap();
       form.reset();
       setOpen(false);
     } catch (error) {
-      // Error handling is now done in the slice
-      console.error("Error creating task:", error);
+      form.setError('deadline', {
+        type: 'server',
+        message: error as string
+      });
     }
   };
 
@@ -95,7 +102,7 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
               <Input
                 id="title"
                 {...form.register("title")}
-                placeholder="Enter task title (min 10 characters)"
+                placeholder="Enter task title (min 5 characters)"
               />
               {form.formState.errors.title && (
                 <span className="text-destructive text-sm">
@@ -113,7 +120,10 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="priority">Priority</Label>
-              <Select defaultValue="low" {...form.register("priority")}>
+              <Select
+                value={priorityField.value}
+                onValueChange={priorityField.onChange}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
@@ -136,12 +146,12 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
               <Label htmlFor="deadline">Deadline</Label>
               <SmartDatetimeInput
                 value={field.value ? new Date(field.value) : undefined}
-                onValueChange={(date) => field.onChange(date.toISOString())}
+                onValueChange={(date) => field.onChange(date?.toISOString() || '')}
                 placeholder="e.g. Tomorrow morning 9am"
               />
               {form.formState.errors.deadline && (
                 <span className="text-destructive text-sm">
-                  {form.formState.errors.deadline.message}
+                  Deadline is required
                 </span>
               )}
             </div>

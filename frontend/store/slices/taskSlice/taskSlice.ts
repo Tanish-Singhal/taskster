@@ -50,23 +50,9 @@ export const createTask = createAsyncThunk(
       return response.data.task;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        toast.error(err.response.data.message, {
-          style: {
-            borderRadius: "5px",
-            background: "#262626",
-            color: "#ffffff",
-          },
-        });
-      } else {
-        toast.error("Failed to create task", {
-          style: {
-            borderRadius: "5px",
-            background: "#262626",
-            color: "#ffffff",
-          },
-        });
+        return Promise.reject(err.response.data.message);
       }
-      throw err;
+      return Promise.reject("Failed to create task");
     }
   }
 );

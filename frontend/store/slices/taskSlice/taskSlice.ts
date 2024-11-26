@@ -33,7 +33,6 @@ export const createTask = createAsyncThunk(
       const formattedData = {
         ...data,
         title: formatNames(data.title),
-        description: data.description ? formatNames(data.description) : data.description
       };
 
       const response = await axios.post(

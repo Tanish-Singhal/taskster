@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import { TaskSchema } from "@/lib/schema/taskSchema";
 import axios from "axios";
+import { formatNames } from "@/lib/utils";
 
 interface Task {
   _id: string;
@@ -29,9 +30,15 @@ export const createTask = createAsyncThunk(
   "task/createTask", 
   async ({data, columnId}: {data: TaskSchema, columnId: string}) => {
     try {
+      const formattedData = {
+        ...data,
+        title: formatNames(data.title),
+        description: data.description ? formatNames(data.description) : data.description
+      };
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/tasks/${columnId}`,
-        data,
+        formattedData,
         {
           headers: {
             Authorization: `${localStorage.getItem("taskster-token")}`,
@@ -96,7 +103,11 @@ export const fetchTasks = createAsyncThunk(
 const taskSlice = createSlice({
   name: "task",
   initialState,
-  reducers: {},
+  reducers: {
+    clearColumnTasks: (state, action: PayloadAction<string>) => {
+      state.tasks = state.tasks.filter(task => task.columnId !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createTask.fulfilled, (state, action) => {
@@ -107,9 +118,18 @@ const taskSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to create task";
       })
+      .addCase(fetchTasks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks = action.payload;
+        // Instead of replacing all tasks, merge them
+        const newTasks = action.payload;
+        const columnId = newTasks[0]?.columnId;
+        
+        state.tasks = state.tasks.filter(task => task.columnId !== columnId);
+        state.tasks.push(...newTasks);
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
@@ -118,4 +138,5 @@ const taskSlice = createSlice({
   }
 });
 
+export const { clearColumnTasks } = taskSlice.actions;
 export default taskSlice.reducer;

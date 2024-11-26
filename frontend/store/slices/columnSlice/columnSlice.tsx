@@ -150,6 +150,7 @@ const columnSlice = createSlice({
       .addCase(fetchColumn.fulfilled, (state, action) => {
         state.columns = action.payload || [];
         state.error = null;
+        state.loading = false;
       })
       .addCase(fetchColumn.rejected, (state, action) => {
         state.error = action.error.message || "An error occurred";

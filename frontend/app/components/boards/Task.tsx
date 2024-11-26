@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Calendar, Edit2, Trash2 } from "lucide-react";
 import React from "react";
 import { format } from "date-fns";
+import { formatNames } from "@/lib/utils";
 
 interface Task {
   _id: string;
@@ -21,24 +22,40 @@ interface TaskProps {
   task: Task;
 }
 
+const getTagColor = (tag: string) => {
+  const colorSchemes = {
+    short: "bg-blue-400 text-blue-700 border-blue-500",
+    medium: "bg-purple-400 text-purple-700 border-purple-500",
+    long: "bg-green-400 text-green-700 border-green-500",
+    veryLong: "bg-orange-400 text-orange-700 border-orange-500"
+  };
+
+  if (tag.length <= 3) return colorSchemes.short;
+  if (tag.length <= 6) return colorSchemes.medium;
+  if (tag.length <= 9) return colorSchemes.long;
+  return colorSchemes.veryLong;
+};
+
 const Task = ({ task }: TaskProps) => {
   const formattedDeadline = task.deadline ? format(new Date(task.deadline), "MMM d") : null;
+  const formattedTitle = formatNames(task.title);
+  const formattedDescription = task.description ? formatNames(task.description) : undefined;
 
   return (
     <Card className="group relative overflow-hidden transition-all hover:border-ring/50 dark:bg-secondary/70">
-      <div className="absolute top-2 right-2 w-2 h-2 rounded-xl">
-        {task.priority === 'high' && <div className="w-full h-full bg-red-500" />}
+      <div className="absolute top-2 right-2 w-2 h-2">
+        {task.priority === 'high' && <div className="w-full h-full bg-red-500 rounded-full" />}
       </div>
 
       <CardHeader className="p-3 pb-2 space-y-3">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <h3 className="font-semibold text-base">{task.title}</h3>
+            <h3 className="font-semibold text-base">{formattedTitle}</h3>
           </div>
         </div>
-        {task.description && (
+        {formattedDescription && (
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-            {task.description}
+            {formattedDescription}
           </p>
         )}
       </CardHeader>
@@ -50,7 +67,7 @@ const Task = ({ task }: TaskProps) => {
               <Badge
                 key={index}
                 variant="outline"
-                className="px-2 py-0.5 text-indigo-800 bg-indigo-400 transition-colors"
+                className={`px-2 py-0.5 transition-colors ${getTagColor(tag)}`}
               >
                 {tag}
               </Badge>

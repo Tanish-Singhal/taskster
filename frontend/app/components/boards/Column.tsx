@@ -67,7 +67,6 @@ const Column = ({ id, title }: ColumnProps) => {
                   <DropdownMenuItem onClick={() => setIsRenameDialogOpen(true)}>
                     Rename Column
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Clear all Tasks</DropdownMenuItem>
                   <DropdownMenuItem
                     className="bg-red-600 text-white focus:bg-red-700 focus:text-white"
                     onClick={() => setIsDeleteDialogOpen(true)}

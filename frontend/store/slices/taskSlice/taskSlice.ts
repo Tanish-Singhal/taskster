@@ -58,7 +58,13 @@ export const createTask = createAsyncThunk(
       if (axios.isAxiosError(err) && err.response) {
         return Promise.reject(err.response.data.message);
       }
-      return Promise.reject("Failed to create task");
+      toast.error("Failed to create task", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
     }
   }
 );
@@ -94,7 +100,49 @@ export const fetchTasks = createAsyncThunk(
           },
         });
       }
-      throw err;
+    }
+  }
+);
+
+export const updateTask = createAsyncThunk(
+  "task/updateTask",
+  async ({ taskId, data }: { taskId: string; data: TaskSchema }) => {
+    try {
+      const formattedData = {
+        ...data,
+        title: formatNames(data.title),
+      };
+
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/tasks/${taskId}`,
+        formattedData,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("taskster-token")}`,
+          },
+        }
+      );
+
+      toast.success("Task updated successfully", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      return response.data.task;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return Promise.reject(err.response.data.message);
+      }
+      toast.error("Failed to update task", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
     }
   }
 );
@@ -102,11 +150,7 @@ export const fetchTasks = createAsyncThunk(
 const taskSlice = createSlice({
   name: "task",
   initialState,
-  reducers: {
-    clearColumnTasks: (state, action: PayloadAction<string>) => {
-      state.tasks = state.tasks.filter(task => task.columnId !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(createTask.fulfilled, (state, action) => {
@@ -123,7 +167,6 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.loading = false;
-        // Instead of replacing all tasks, merge them
         const newTasks = action.payload;
         const columnId = newTasks[0]?.columnId;
         
@@ -133,9 +176,17 @@ const taskSlice = createSlice({
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch tasks";
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex(task => task._id === action.payload._id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to update task";
       });
   }
 });
 
-export const { clearColumnTasks } = taskSlice.actions;
 export default taskSlice.reducer;

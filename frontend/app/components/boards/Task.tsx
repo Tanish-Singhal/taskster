@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { format } from "date-fns";
 import { formatNames } from "@/lib/utils";
 import ViewTaskDialog from "./ViewTaskDialog";
+import EditTaskDialog from "./EditTaskDialog";
 
 interface Task {
   _id: string;
@@ -39,9 +40,15 @@ const getTagColor = (tag: string) => {
 
 const Task = ({ task }: TaskProps) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const formattedDeadline = task.deadline ? format(new Date(task.deadline), "MMM d") : null;
   const formattedTitle = formatNames(task.title);
   const formattedDescription = task.description;
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowEdit(true);
+  };
 
   return (
     <>
@@ -97,6 +104,7 @@ const Task = ({ task }: TaskProps) => {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 hover:bg-primary/20 hover:text-primary"
+                onClick={handleEdit}
               >
                 <Edit2 className="h-4 w-4" />
               </Button>
@@ -115,6 +123,11 @@ const Task = ({ task }: TaskProps) => {
         task={task}
         open={showDetails}
         onOpenChange={setShowDetails}
+      />
+      <EditTaskDialog 
+        task={task}
+        open={showEdit}
+        onOpenChange={setShowEdit}
       />
     </>
   );

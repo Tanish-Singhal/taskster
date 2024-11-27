@@ -1,67 +1,60 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { taskSchema, TaskSchema } from "@/lib/schema/taskSchema";
 import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch } from "@/store/redux-hooks";
-import { createTask } from "@/store/slices/taskSlice/taskSlice";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SmartDatetimeInput } from "@/components/smart-date-time-input";
 import { TagsInput } from "@/components/tags-input";
-import { useState } from "react";
+import { useAppDispatch } from "@/store/redux-hooks";
+import { updateTask } from "@/store/slices/taskSlice/taskSlice";
 
-interface AddTaskDialogProps {
+interface Task {
+  _id: string;
+  title: string;
+  description?: string;
+  priority: "low" | "medium" | "high";
+  tags: string[];
+  deadline?: string;
   columnId: string;
 }
 
-const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
+interface EditTaskDialogProps {
+  task: Task;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const EditTaskDialog = ({ task, open, onOpenChange }: EditTaskDialogProps) => {
   const dispatch = useAppDispatch();
-  const [open, setOpen] = useState(false);
 
   const form = useForm<TaskSchema>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      priority: "low",
-      deadline: "",
-      tags: [],
+      title: task.title,
+      description: task.description || "",
+      priority: task.priority,
+      deadline: task.deadline,
+      tags: task.tags,
     },
   });
 
-  const { field } = useController({
+  const { field: deadlineField } = useController({
     name: "deadline",
     control: form.control,
   });
-
-  const handleDateChange = (date: Date | undefined) => {
-    if (date) {
-      field.onChange(date.toISOString());
-    } else {
-      field.onChange('');
-    }
-  };
 
   const { field: tagsField } = useController({
     name: "tags",
@@ -73,37 +66,31 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
     control: form.control,
   });
 
+  const handleDateChange = (date: Date | undefined) => {
+    if (date) {
+      deadlineField.onChange(date.toISOString());
+    } else {
+      deadlineField.onChange('');
+    }
+  };
+
   const onSubmit = async (data: TaskSchema) => {
     try {
-      await dispatch(createTask({ data, columnId })).unwrap();
-      form.reset();
-      setOpen(false);
-    } catch {
-      if (!data.deadline) {
-        form.setError('deadline', {
-          type: 'required',
-          message: 'Deadline is required'
-        });
-      }
+      await dispatch(updateTask({ taskId: task._id, data })).unwrap();
+      onOpenChange(false);
+    } catch (error) {
+      form.setError('root', {
+        type: 'server',
+        message: error as string
+      });
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-muted-foreground/30">
-              <Plus className="h-6 w-6" />
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
-        <TooltipContent>Add new Task</TooltipContent>
-      </Tooltip>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-11/12 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create new Task</DialogTitle>
-          <DialogDescription>Fill in the details below to create a new task.</DialogDescription>
+          <DialogTitle>Edit Task</DialogTitle>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
@@ -155,20 +142,15 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
             <div className="grid gap-2">
               <Label htmlFor="deadline">Deadline</Label>
               <SmartDatetimeInput
-                value={field.value ? new Date(field.value) : undefined}
+                value={deadlineField.value ? new Date(deadlineField.value) : undefined}
                 onValueChange={handleDateChange}
                 placeholder="e.g. Tomorrow morning 9am"
               />
-              {form.formState.errors.deadline && (
-                <span className="text-destructive text-sm">
-                  Deadline is required
-                </span>
-              )}
             </div>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Creating..." : "Create"}
+              {form.formState.isSubmitting ? "Saving..." : "Save changes"}
             </Button>
           </DialogFooter>
         </form>
@@ -177,4 +159,4 @@ const AddTaskDialog = ({ columnId }: AddTaskDialogProps) => {
   );
 };
 
-export default AddTaskDialog;
+export default EditTaskDialog;

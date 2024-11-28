@@ -147,6 +147,43 @@ export const updateTask = createAsyncThunk(
   }
 );
 
+export const deleteTask = createAsyncThunk(
+  "task/deleteTask",
+  async (taskId: string) => {
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/tasks/${taskId}`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("taskster-token")}`,
+          },
+        }
+      );
+
+      toast.success("Task deleted successfully", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      return taskId;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return Promise.reject(err.response.data.message);
+      }
+      toast.error("Failed to delete task", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -185,6 +222,12 @@ const taskSlice = createSlice({
       })
       .addCase(updateTask.rejected, (state, action) => {
         state.error = action.error.message || "Failed to update task";
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter(task => task._id !== action.payload);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to delete task";
       });
   }
 });

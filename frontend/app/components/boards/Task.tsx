@@ -9,6 +9,9 @@ import { format } from "date-fns";
 import { formatNames } from "@/lib/utils";
 import ViewTaskDialog from "./ViewTaskDialog";
 import EditTaskDialog from "./EditTaskDialog";
+import { useAppDispatch } from "@/store/redux-hooks";
+import { deleteTask } from "@/store/slices/taskSlice/taskSlice";
+import DeleteTaskAlert from "./DeleteTaskAlert";
 
 interface Task {
   _id: string;
@@ -39,8 +42,11 @@ const getTagColor = (tag: string) => {
 };
 
 const Task = ({ task }: TaskProps) => {
+  const dispatch = useAppDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const formattedDeadline = task.deadline ? format(new Date(task.deadline), "MMM d") : null;
   const formattedTitle = formatNames(task.title);
   const formattedDescription = task.description;
@@ -48,6 +54,23 @@ const Task = ({ task }: TaskProps) => {
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowEdit(true);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteAlert(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await dispatch(deleteTask(task._id)).unwrap();
+      setShowDeleteAlert(false);
+    } catch {
+      // Error will be handled by the toast in the thunk
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -112,6 +135,7 @@ const Task = ({ task }: TaskProps) => {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 hover:bg-red-600 text-red-500 hover:text-white"
+                onClick={handleDelete}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -128,6 +152,12 @@ const Task = ({ task }: TaskProps) => {
         task={task}
         open={showEdit}
         onOpenChange={setShowEdit}
+      />
+      <DeleteTaskAlert
+        open={showDeleteAlert}
+        onOpenChange={setShowDeleteAlert}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleting}
       />
     </>
   );

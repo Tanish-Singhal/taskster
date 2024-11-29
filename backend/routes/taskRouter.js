@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 const taskSchema = zod.object({
-  title: zod.string().min(5).max(100),
+  title: zod.string().min(5).max(30),
   description: zod.string().optional(),
   priority: zod.enum(["low", "medium", "high"]).default("low"),
   tags: zod.array(zod.string()).default([]),

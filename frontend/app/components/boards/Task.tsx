@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Calendar, Edit2, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { format } from "date-fns";
@@ -76,7 +77,7 @@ const Task = ({ task }: TaskProps) => {
   return (
     <>
       <Card 
-        className="group relative overflow-hidden transition-all hover:border-ring/50 dark:bg-secondary/70 cursor-pointer"
+        className="group relative overflow-hidden transition-all hover:border-ring/50 dark:bg-secondary/70 cursor-pointer max-w-[280px]"
         onClick={() => setShowDetails(true)}
       >
         <div className="absolute top-2 right-2 w-2 h-2">
@@ -85,9 +86,9 @@ const Task = ({ task }: TaskProps) => {
 
         <CardHeader className="p-3 pb-2 space-y-3">
           <div className="flex items-start justify-between">
-            <div className="space-y-1">
-              <h3 className="font-semibold text-base">{formattedTitle}</h3>
-            </div>
+            <div className="space-y-1 max-w-[240px]">
+              <h3 className="font-semibold text-base break-words line-clamp-2">{formattedTitle}</h3>
+            </div>  
           </div>
           {formattedDescription && (
             <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 whitespace-pre-wrap">
@@ -123,22 +124,41 @@ const Task = ({ task }: TaskProps) => {
               </div>
             )}
             <div className="flex gap-1 transition-all duration-200 opacity-0 group-hover:opacity-100">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 hover:bg-primary/20 hover:text-primary"
-                onClick={handleEdit}
-              >
-                <Edit2 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 hover:bg-red-600 text-red-500 hover:text-white"
-                onClick={handleDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 hover:bg-primary/20 hover:text-primary"
+                      onClick={handleEdit}
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Edit task</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 hover:bg-red-600 text-red-500 hover:text-white"
+                      onClick={handleDelete}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Delete task</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         </CardFooter>

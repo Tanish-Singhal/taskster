@@ -33,16 +33,6 @@ const data = {
       icon: LayoutDashboard,
     },
     {
-      title: "Search",
-      url: "/search",
-      icon: Search,
-    },
-    {
-      title: "Favourite",
-      url: "/favourite",
-      icon: Star,
-    },
-    {
       title: "Settings",
       url: "/settings",
       icon: Settings2,

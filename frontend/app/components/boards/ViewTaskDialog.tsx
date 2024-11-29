@@ -16,8 +16,8 @@ interface Task {
   title: string;
   description?: string;
   priority: "low" | "medium" | "high";
-  tags: string[];
-  deadline?: string;
+  tags: string[];  // removed optional
+  deadline: string;
   columnId: string;
 }
 
@@ -28,7 +28,7 @@ interface ViewTaskDialogProps {
 }
 
 const ViewTaskDialog = ({ task, open, onOpenChange }: ViewTaskDialogProps) => {
-  const formattedDeadline = task.deadline ? format(new Date(task.deadline), "PPP 'at' p") : "No deadline";
+  const formattedDeadline = format(new Date(task.deadline), "PPP 'at' p");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

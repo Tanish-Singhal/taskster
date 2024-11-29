@@ -17,16 +17,7 @@ import DeleteColumnDialog from "./DeleteColumnDialog";
 import RenameColumnDialog from "./RenameColumnDialog";
 import AddTaskDialog from "./AddTaskDialog";
 import TaskComponent from "./Task";
-
-interface Task {
-  _id: string;
-  title: string;
-  description?: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];
-  deadline?: string;
-  columnId: string;
-}
+import type { Task } from "@/types";
 
 interface ColumnProps {
   id: string;
@@ -43,7 +34,9 @@ const Column = ({ id, title }: ColumnProps) => {
     dispatch(fetchTasks(id));
   }, [dispatch, id]);
 
-  const columnTasks = tasks.filter((task: Task) => task.columnId === id);
+  const columnTasks = tasks
+    .filter((task: Task) => task.columnId === id)
+    .sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
 
   return (
     <div>

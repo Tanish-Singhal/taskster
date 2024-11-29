@@ -13,16 +13,7 @@ import EditTaskDialog from "./EditTaskDialog";
 import { useAppDispatch } from "@/store/redux-hooks";
 import { deleteTask } from "@/store/slices/taskSlice/taskSlice";
 import DeleteTaskAlert from "./DeleteTaskAlert";
-
-interface Task {
-  _id: string;
-  title: string;
-  description?: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];
-  deadline?: string;
-  columnId: string;
-}
+import type { Task } from "@/types";
 
 interface TaskProps {
   task: Task;
@@ -48,7 +39,7 @@ const Task = ({ task }: TaskProps) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const formattedDeadline = task.deadline ? format(new Date(task.deadline), "MMM d") : null;
+  const formattedDeadline = format(new Date(task.deadline), "MMM d");
   const formattedTitle = formatNames(task.title);
   const formattedDescription = task.description;
 

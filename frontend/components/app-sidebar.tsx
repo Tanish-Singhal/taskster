@@ -3,11 +3,9 @@
 import * as React from "react";
 import {
   LayoutDashboard,
-  Search,
   Send,
   Settings2,
   CircleCheckBig,
-  Star
 } from "lucide-react";
 
 import { NavBoards } from "@/components/nav-boards";

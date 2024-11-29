@@ -3,16 +3,7 @@ import toast from "react-hot-toast";
 import { TaskSchema } from "@/lib/schema/taskSchema";
 import axios from "axios";
 import { formatNames } from "@/lib/utils";
-
-interface Task {
-  _id: string;
-  title: string;
-  description?: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];
-  deadline?: string;
-  columnId: string;
-}
+import { Task } from "@/types";
 
 interface TaskState {
   tasks: Task[];

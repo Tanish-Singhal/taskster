@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -20,16 +19,7 @@ import { SmartDatetimeInput } from "@/components/smart-date-time-input";
 import { TagsInput } from "@/components/tags-input";
 import { useAppDispatch } from "@/store/redux-hooks";
 import { updateTask } from "@/store/slices/taskSlice/taskSlice";
-
-interface Task {
-  _id: string;
-  title: string;
-  description?: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];
-  deadline?: string;
-  columnId: string;
-}
+import { Task } from "@/types";
 
 interface EditTaskDialogProps {
   task: Task;

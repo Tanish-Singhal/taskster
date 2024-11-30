@@ -133,7 +133,9 @@ export function NavUser() {
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push("/settings")}
+              >
                 <Settings2 />
                 Settings
               </DropdownMenuItem>

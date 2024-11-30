@@ -266,4 +266,52 @@ router.get("/logout", authMiddleware, async (req, res) => {
   }
 });
 
+const deleteAccountSchema = zod.object({
+  password: zod.string().min(8).max(100),
+});
+
+router.delete("/delete-account", authMiddleware, async (req, res) => {
+  const body = req.body;
+  const result = deleteAccountSchema.safeParse(body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid data",
+      errors: result.error.errors,
+    });
+  }
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const validPassword = await bcrypt.compare(body.password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid password",
+      });
+    }
+
+    await User.findByIdAndDelete(req.userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting account",
+      error: "Internal Server Error",
+    });
+  }
+});
+
 module.exports = router;

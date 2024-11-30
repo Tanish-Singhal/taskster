@@ -53,6 +53,23 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const deleteAccount = createAsyncThunk(
+  "user/deleteAccount",
+  async (password: string) => {
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/auth/delete-account`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("taskster-token"),
+        },
+        data: { password },
+      }
+    );
+    localStorage.removeItem("taskster-token");
+    return null;
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -99,6 +116,20 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to update user";
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAccount.fulfilled, (state) => {
+        state.user = null;
+        state.initialized = false;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteAccount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to delete account";
       });
   },
 });

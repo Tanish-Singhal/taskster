@@ -37,6 +37,22 @@ export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
   return null;
 });
 
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (data: { username?: string; currentPassword?: string; newPassword?: string }) => {
+    const response = await axios.put(
+      `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/auth/update`,
+      data,
+      {
+        headers: {
+          Authorization: localStorage.getItem("taskster-token"),
+        },
+      }
+    );
+    return response.data.user;
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -70,6 +86,19 @@ const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to update user";
       });
   },
 });

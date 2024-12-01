@@ -18,6 +18,7 @@ import type { Task } from "@/types";
 interface TaskProps {
   task: Task;
   searchTerm?: string;
+  priorityFilter?: string | undefined;
 }
 
 const getTagColor = (tag: string) => {
@@ -34,7 +35,7 @@ const getTagColor = (tag: string) => {
   return colorSchemes.veryLong;
 };
 
-const Task = ({ task, searchTerm = "" }: TaskProps) => {
+const Task = ({ task, searchTerm = "", priorityFilter = "" }: TaskProps) => {
   const dispatch = useAppDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -70,7 +71,9 @@ const Task = ({ task, searchTerm = "" }: TaskProps) => {
     task.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     task.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) : true;
 
-  if (!matchesSearch) {
+  const matchesPriority = !priorityFilter || priorityFilter === 'all' || task.priority === priorityFilter;
+  
+  if (!matchesSearch || !matchesPriority) {
     return null;
   }
 

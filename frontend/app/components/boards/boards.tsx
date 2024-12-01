@@ -22,6 +22,7 @@ import {
 const Boards = () => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState<string | undefined>(undefined);
   const { columns } = useAppSelector((state) => state.column);
   const { currentBoard, loading, error } = useAppSelector((state) => state.board);
 
@@ -31,6 +32,10 @@ const Boards = () => {
 
   const clearSearch = () => {
     setSearchTerm("");
+  };
+
+  const handlePriorityFilter = (value: string) => {
+    setPriorityFilter(value);
   };
 
   useEffect(() => {
@@ -115,13 +120,15 @@ const Boards = () => {
                 </button>
               )}
             </div>
-            <div>
-              <Select>
-                <SelectTrigger className="w-[100px]">
-                  <SelectValue placeholder="Priority" />
+            <div className="flex items-center space-x-4">
+              <p className="text-sm text-muted-foreground">Task Priority</p>
+              <Select value={priorityFilter} onValueChange={handlePriorityFilter}>
+                <SelectTrigger className="w-[110px]">
+                  <SelectValue placeholder="All" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="all">All</SelectItem>
                     <SelectItem value="low">Low</SelectItem>
                     <SelectItem value="medium">Medium</SelectItem>
                     <SelectItem value="high">High</SelectItem>
@@ -150,6 +157,7 @@ const Boards = () => {
                 key={column._id}
                 id={column._id}
                 searchTerm={searchTerm}
+                priorityFilter={priorityFilter}
               />
             ))}
           </div>

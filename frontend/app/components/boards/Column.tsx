@@ -23,9 +23,10 @@ interface ColumnProps {
   id: string;
   title: string;
   searchTerm?: string;
+  priorityFilter?: string;
 }
 
-const Column = ({ id, title, searchTerm }: ColumnProps) => {
+const Column = ({ id, title, searchTerm, priorityFilter }: ColumnProps) => {
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector((state) => state.task);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -85,6 +86,7 @@ const Column = ({ id, title, searchTerm }: ColumnProps) => {
                   key={task._id} 
                   task={task} 
                   searchTerm={searchTerm}
+                  priorityFilter={priorityFilter}
                 />
               ))
             )}

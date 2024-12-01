@@ -17,6 +17,7 @@ import type { Task } from "@/types";
 
 interface TaskProps {
   task: Task;
+  searchTerm?: string;
 }
 
 const getTagColor = (tag: string) => {
@@ -33,7 +34,7 @@ const getTagColor = (tag: string) => {
   return colorSchemes.veryLong;
 };
 
-const Task = ({ task }: TaskProps) => {
+const Task = ({ task, searchTerm = "" }: TaskProps) => {
   const dispatch = useAppDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -41,7 +42,6 @@ const Task = ({ task }: TaskProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const formattedDeadline = format(new Date(task.deadline), "MMM d");
   const formattedTitle = formatNames(task.title);
-  const formattedDescription = task.description;
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -65,6 +65,15 @@ const Task = ({ task }: TaskProps) => {
     }
   };
 
+  const matchesSearch = searchTerm ? 
+    task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    task.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    task.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) : true;
+
+  if (!matchesSearch) {
+    return null;
+  }
+
   return (
     <>
       <Card 
@@ -81,11 +90,6 @@ const Task = ({ task }: TaskProps) => {
               <h3 className="font-semibold text-base break-words line-clamp-2">{formattedTitle}</h3>
             </div>  
           </div>
-          {formattedDescription && (
-            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 whitespace-pre-wrap">
-              {formattedDescription}
-            </p>
-          )}
         </CardHeader>
 
         {task.tags.length > 0 && (

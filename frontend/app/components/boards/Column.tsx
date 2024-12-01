@@ -22,9 +22,10 @@ import type { Task } from "@/types";
 interface ColumnProps {
   id: string;
   title: string;
+  searchTerm?: string;
 }
 
-const Column = ({ id, title }: ColumnProps) => {
+const Column = ({ id, title, searchTerm }: ColumnProps) => {
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector((state) => state.task);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -42,8 +43,10 @@ const Column = ({ id, title }: ColumnProps) => {
     <div>
       <div className="border w-72 md:w-80 h-[calc(100vh-17rem)] bg-sidebar/60 text-sidebar-foreground rounded-lg flex flex-col">
         <div className="p-3 md:p-4 flex justify-between items-center">
-          <span className="font-semibold text-lg">{title}</span>
-          <div className="flex space-x-3 items-center">
+          <div className="flex-1 min-w-0 pr-2">
+            <span className="font-semibold text-lg truncate block">{title}</span>
+          </div>
+          <div className="flex-shrink-0 flex space-x-3 items-center">
             <TooltipProvider>
               <AddTaskDialog columnId={id} />
               <DropdownMenu>
@@ -78,7 +81,11 @@ const Column = ({ id, title }: ColumnProps) => {
               <p className="text-center text-muted-foreground py-4 text-xl font-semibold">No tasks yet</p>
             ) : (
               columnTasks.map((task: Task) => (
-                <TaskComponent key={task._id} task={task} />
+                <TaskComponent 
+                  key={task._id} 
+                  task={task} 
+                  searchTerm={searchTerm}
+                />
               ))
             )}
           </div>

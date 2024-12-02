@@ -10,16 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-interface Task {
-  _id: string;
-  title: string;
-  description?: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];  // removed optional
-  deadline: string;
-  columnId: string;
-}
+import { Task } from "@/types";
 
 interface ViewTaskDialogProps {
   task: Task;
@@ -34,7 +25,7 @@ const ViewTaskDialog = ({ task, open, onOpenChange }: ViewTaskDialogProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-11/12 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{task.title}</DialogTitle>
+          <DialogTitle className="break-words max-w-[280px] sm:max-w-full">{task.title}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-6 py-6">
           {task.description && (

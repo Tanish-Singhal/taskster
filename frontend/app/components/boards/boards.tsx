@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import React, { useEffect, useState } from "react";
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert, Search } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/redux-hooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import ColumnSkeleton from "./ColumnSkeleton";
@@ -105,9 +105,10 @@ const Boards = () => {
           <hr className="border-border/70" />
           <div className="flex justify-between items-center">
             <div className="relative">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search Task"
-                className="w-[150px] md:w-[200px] text-sm pr-8"
+                className="w-[150px] md:w-[200px] text-sm pl-8 pr-8"
                 value={searchTerm}
                 onChange={handleSearch}
               />

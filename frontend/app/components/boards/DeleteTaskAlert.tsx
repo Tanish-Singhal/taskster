@@ -33,7 +33,7 @@ const DeleteTaskAlert = ({ open, onOpenChange, onConfirm, isLoading }: DeleteTas
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 text-white hover:bg-red-700"
             disabled={isLoading}
           >
             {isLoading ? "Deleting..." : "Delete"}

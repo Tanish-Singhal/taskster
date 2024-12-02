@@ -42,7 +42,7 @@ const Column = ({ id, title, searchTerm, priorityFilter }: ColumnProps) => {
 
   return (
     <div>
-      <div className="border w-72 md:w-80 h-[calc(100vh-17rem)] bg-sidebar/60 text-sidebar-foreground rounded-lg flex flex-col">
+      <div className="border w-80 h-[calc(100vh-17rem)] bg-sidebar/60 text-sidebar-foreground rounded-lg flex flex-col">
         <div className="p-3 md:p-4 flex justify-between items-center">
           <div className="flex-1 min-w-0 pr-2">
             <span className="font-semibold text-lg truncate block">{title}</span>

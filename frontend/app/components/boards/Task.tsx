@@ -97,7 +97,7 @@ const Task = ({ task, searchTerm = "", priorityFilter = "" }: TaskProps) => {
 
         {task.tags.length > 0 && (
           <CardContent className="p-3 pt-0">
-            <div className="flex flex-wrap gap-1.5">
+            <div className="space-x-1">
               {task.tags.map((tag, index) => (
                 <Badge
                   key={index}

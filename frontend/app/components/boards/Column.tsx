@@ -39,7 +39,6 @@ const Column = ({ id, title, searchTerm, priorityFilter }: ColumnProps) => {
 
   const columnTasks = tasks
     .filter((task: Task) => task.columnId === id)
-    .sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
 
   return (
     <div>

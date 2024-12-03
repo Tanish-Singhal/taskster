@@ -175,6 +175,44 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
+export const updateTaskColumn = createAsyncThunk(
+  "task/updateTaskColumn",
+  async ({ taskId, columnId }: { taskId: string; columnId: string }) => {
+    try {
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_DEVELOPMENT_URL}/api/v1/tasks/${taskId}/column`,
+        { columnId },
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("taskster-token")}`,
+          },
+        }
+      );
+
+      toast.success("Task moved successfully", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+
+      return response.data.task;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return Promise.reject(err.response.data.message);
+      }
+      toast.error("Failed to move task", {
+        style: {
+          borderRadius: "5px",
+          background: "#262626",
+          color: "#ffffff",
+        },
+      });
+    }
+  }
+);
+
 const taskSlice = createSlice({
   name: "task",
   initialState,
@@ -219,6 +257,12 @@ const taskSlice = createSlice({
       })
       .addCase(deleteTask.rejected, (state, action) => {
         state.error = action.error.message || "Failed to delete task";
+      })
+      .addCase(updateTaskColumn.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex(task => task._id === action.payload._id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
       });
   }
 });

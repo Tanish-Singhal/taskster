@@ -93,6 +93,36 @@ router.put("/:taskId", async (req, res) => {
   }
 });
 
+router.put("/:taskId/column", async (req, res) => {
+  try {
+    const { columnId } = req.body;
+    
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.taskId,
+      { columnId },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Task moved successfully",
+      task: updatedTask
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while moving task"
+    });
+  }
+});
+
 router.delete("/:taskId", async (req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.taskId);

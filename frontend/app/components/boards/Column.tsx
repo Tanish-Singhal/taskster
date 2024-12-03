@@ -18,6 +18,7 @@ import RenameColumnDialog from "./RenameColumnDialog";
 import AddTaskDialog from "./AddTaskDialog";
 import TaskComponent from "./Task";
 import type { Task } from "@/types";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 
 interface ColumnProps {
   id: string;
@@ -77,20 +78,44 @@ const Column = ({ id, title, searchTerm, priorityFilter }: ColumnProps) => {
         </div>
         <hr />
         <ScrollArea className="px-4 py-3">
-          <div className="space-y-3">
-            {columnTasks.length === 0 ? (
-              <p className="text-center text-muted-foreground py-4 text-xl font-semibold">No tasks yet</p>
-            ) : (
-              columnTasks.map((task: Task) => (
-                <TaskComponent 
-                  key={task._id} 
-                  task={task} 
-                  searchTerm={searchTerm}
-                  priorityFilter={priorityFilter}
-                />
-              ))
+          <Droppable droppableId={id}>
+            {(provided) => (
+              <div 
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="space-y-3"
+              >
+                {columnTasks.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-4 text-xl font-semibold">
+                    No tasks yet
+                  </p>
+                ) : (
+                  columnTasks.map((task: Task, index: number) => (
+                    <Draggable 
+                      key={task._id} 
+                      draggableId={task._id} 
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <TaskComponent 
+                            task={task} 
+                            searchTerm={searchTerm}
+                            priorityFilter={priorityFilter}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))
+                )}
+                {provided.placeholder}
+              </div>
             )}
-          </div>
+          </Droppable>
         </ScrollArea>
       </div>
 
